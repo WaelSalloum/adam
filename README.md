@@ -10,7 +10,7 @@ Authors: Wael Salloum and Nizar Habash.
 
 ## CITATION
 
-If you use ADAM, please cite this paper:
+If you use ADAM, please cite these two papers:
 
     (2011) Wael Salloum & Nizar Habash: Dialectal to standard Arabic
     paraphrasing to improve Arbaic-English statistical machine
@@ -32,19 +32,20 @@ If you use ADAM, please cite this paper:
 http://aclweb.org/anthology/W/W11/W11-2602.pdf
 
 And:
+
     Salloum, Wael, and Nizar Habash. "Adam: Analyzer for dialectal arabic 
     morphology." Journal of King Saud University-Computer and Information 
     Sciences 26.4 (2014): 372-378.
     
     @article{salloum+habash2014adam,
-          title={Adam: Analyzer for dialectal arabic morphology},
-          author={Salloum, Wael and Habash, Nizar},
-          journal={Journal of King Saud University-Computer and Information Sciences},
-          volume={26},
-          number={4},
-          pages={372--378},
-          year={2014},
-          publisher={Elsevier}}
+        title={Adam: Analyzer for dialectal arabic morphology},
+        author={Salloum, Wael and Habash, Nizar},
+        journal={Journal of King Saud University-Computer and Information Sciences},
+        volume={26},
+        number={4},
+        pages={372--378},
+        year={2014},
+        publisher={Elsevier}}
 
 http://www.sciencedirect.com/science/article/pii/S1319157814000342
 

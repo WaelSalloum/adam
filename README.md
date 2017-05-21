@@ -1,6 +1,6 @@
 # ADAM: Analyzer for Dialectal Arabic Morphology
 
-Copyright 2012 (c) Columbia University. All Rights Reserved.
+Copyright 2017 (c) Columbia University. All Rights Reserved.
 
 ADAM VERSION: 0.4
 
@@ -148,4 +148,4 @@ addressing this in the future.
 
 
 --------------------------------------------------------------------------------
-Copyright 2012 (c) Columbia University. All Rights Reserved.
+Copyright 2017 (c) Columbia University. All Rights Reserved.

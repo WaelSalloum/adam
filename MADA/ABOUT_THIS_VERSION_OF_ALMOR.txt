@@ -1,0 +1,5 @@
+
+This version of ALMOR3.pm is based on that of MADA 3.2 and was modified to allow longer prefixes.
+
+Wael
+

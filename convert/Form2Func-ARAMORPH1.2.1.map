@@ -1,0 +1,2020 @@
+;; ARAMORPH/BAMA 1.2.1
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; We define here the various feature value combinations to allow us to do error checking
+;; feat <tab> list of values; the same feature name may appear on multiple lines (take union)
+;; These are used to enforce (a.) the form of allowed feat:val pairs and (b.) to disallow inconsistent cases (gen: and gen:f in same word!) and (c.) to error-check the conversion as well as the analysis...
+;; "," is reserved to indicate multiple values (a problem case)
+;; "*" value is used to mean unspecified pos:*
+;; used in XAMA2ALMOR and in ALMOR
+
+DEFINE FEATURE:VALUE
+
+;; define classes of "input for generation"; "optional vs oblig"
+
+
+;; Part-of-speech
+
+pos    noun noun_num noun_quant noun_prop 
+pos    adj adj_comp adj_num 
+pos    adv adv_interrog adv_rel
+pos    pron pron_dem pron_exclam pron_interrog pron_rel
+pos    verb verb_pseudo
+pos    part part_det part_focus part_fut part_interrog part_neg part_restrict part_verb part_voc
+pos    prep abbrev punc conj conj_sub interj
+pos    digit latin
+
+;; Inflectional features
+
+;;;;;;;;;;;; aspect [c]ommand [i]mperfective [p]erfective
+asp    c i p na
+
+;;;;;;;;;;;; case [n]ominative [a]ccusative [g]enitive na=not/applicable [u]ndefined 
+cas    n a g na u 
+
+;;;;;;;;;;;; gender [f]eminine [m]asculine   na=not/applicable
+gen    f m na 
+
+;;;;;;;;;;;; mood [i]ndicative [j]ussive [s]ubjunctive na=not/applicable [u]ndefined 
+mod    i j s na u
+
+;;;;;;;;;;;; number [s]ingular [d]ual [p]lural na=not/applicable [u]ndefined 
+num    s d p na u
+
+;;;;;;;;;;;; mood [1]st [2]nd [3]rd na=not/applicable
+per    1 2 3 na 
+
+;;;;;;;;;;;; state/determination [i]ndefinite [d]efinite [c]constract/poss/idafa na=not/applicable [u]ndefined 
+stt    i d c na	u
+
+;;;;;;;;;;;; voice [a]ctive [p]assive na=not/applicable [u]ndefined 
+vox    a p na u
+
+;; Clitics:	prc3 prc2 prc1 prc0 word enc0 enc1 enc2
+;;              ques conj part dart word pron pron neg
+;;	enc1/enc2 are not common in MSA but appear in dialecs	  
+;; consider making: prcX is <form>_<pos>
+
+;;NOTE - we ignore distinciton of lA_neg and lA_pseudo as clitics
+
+prc0   0 na Al_det lA_neg mA_neg mA_rel mA_part 
+
+
+prc1   0 na bi_part bi_prep ka_prep la_emph la_prep la_rc li_jus li_prep sa_fut ta_prep
+prc1   wa_prep fiy_prep
+prc1   yA_voc wA_voc hA_dem
+
+prc2   0 na fa_conj fa_conn fa_rc fa_sub wa_conj wa_part wa_sub 
+; SAMA3.1 anamoly: ignored!!
+;prc2   wafa_conj
+
+
+prc3   0 na >a_ques
+
+enc0   0 na
+enc0   1p_poss 1s_poss 2d_poss 2fp_poss 2fs_poss 2mp_poss 2ms_poss 3d_poss 3fp_poss 3fs_poss 3mp_poss 3ms_poss 
+enc0   1p_pron 1s_pron 2d_pron 2fp_pron 2fs_pron 2mp_pron 2ms_pron 3d_pron 3fp_pron 3fs_pron 3mp_pron 3ms_pron 
+enc0   1p_dobj 1s_dobj 2d_dobj 2fp_dobj 2fs_dobj 2mp_dobj 2ms_dobj 3d_dobj 3fp_dobj 3fs_dobj 3mp_dobj 3ms_dobj 
+enc0   Ah_voc ma_interrog mA_interrog man_interrog man_rel ma_rel mA_rel ma_sub mA_sub lA_neg
+
+;;;;;;;;;;;; Buckwalter analysis
+bw     *open*
+
+;;;;;;;;;;;; lexeme/lemma
+lex    *open*
+
+;;;;;;;;;;;; diacitizaiton
+diac   *open*
+
+;;;;;;;;;;;; gloss
+gloss  *open*
+
+;;;;;;;;;;;; rationality
+rat    n y na
+
+;;;;;;;;;;;; source: specifies the source of the analysis... lex=from lexicon; spvar=with spellvariant from lexicon and backoff=is stem-lex irrelevant lexicon; foreign/punct/digit are form based backoffs
+source lex spvar backoff foreign punct digit
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Define printout order
+;; used in XAMA2ALMOR and in ALMOR
+
+DEFINE ORDER
+
+diac lex bw gloss pos prc3 prc2 prc1 prc0 per asp vox mod gen num stt cas enc0 rat source
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Define defaults by pos
+;; X:* means this has to be filled by system...defaults not accepted. Can be interpreted as "unspecified"
+;; used in ALMOR only
+
+DEFINE DEFAULTS
+;; classes of defaults
+@NOM asp:na cas:u  gen:m  mod:na num:s  per:na stt:i  vox:na prc0:0  prc1:0  prc2:0  prc3:0  enc0:0  rat:y  bw:* lex:* diac:* gloss:* source:lex 
+@VRB asp:*  cas:na gen:m  mod:u  num:s  per:3  stt:na vox:u  prc0:0  prc1:0  prc2:0  prc3:0  enc0:0  rat:na bw:* lex:* diac:* gloss:* source:lex
+@PRT asp:na cas:na gen:na mod:na num:na per:na stt:na vox:na prc0:na prc1:0  prc2:0  prc3:0  enc0:0  rat:na bw:* lex:* diac:* gloss:* source:lex
+@PNX asp:na cas:na gen:na mod:na num:na per:na stt:na vox:na prc0:na prc1:na prc2:na prc3:na enc0:na rat:na bw:* lex:* diac:* gloss:* source:lex
+
+;; pos members of the default classes
+MEMBERS @NOM pos:noun pos:noun_num pos:noun_quant pos:noun_prop pos:adj pos:adj_comp 
+MEMBERS @NOM pos:adj_num pos:adv pos:adv_interrog pos:adv_rel
+MEMBERS @NOM pos:pron pos:pron_dem pos:pron_exclam pos:pron_interrog pos:pron_rel
+MEMBERS @VRB pos:verb 
+MEMBERS @PRT pos:part pos:part_det pos:part_focus pos:part_fut pos:part_interrog pos:verb_pseudo
+MEMBERS @PRT pos:part_neg pos:part_restrict pos:part_verb pos:part_voc pos:prep pos:conj pos:conj_sub
+MEMBERS @PNX pos:abbrev pos:punc pos:digit pos:latin pos:interj
+
+;; undefined pos case:
+MEMBERS @PNX pos:*
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; STEM BACKOFF
+;; specify categories to generate BACKOFFS
+
+DEFINE STEMBACKOFF
+PROP N0
+ALL  N0 Nall CV IV PV
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Handling No-Analysis cases
+;; Cases not handled by the lexicon
+;; apply in this order:
+;; 1. latin
+;; 2. digits
+;; 3. punctuation --> a basic set or @@PUNC@@
+;; 4. other...
+;; NOT FUNCTIONAL YET
+
+
+DEFINE NOANALYSIS
+
+CLASS LATIN	pos:latin
+CLASS DIGIT	pos:digit
+CLASS PUNC	pos:punc
+CLASS else	pos:noun_prop
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+MAP PREFIXES
+
+; SAMA-3.1 anamoly
+;IGNORE wa/CONJ+fa/CONJ	prc2:wafa_conj
+;
+
+wa/CONJ		prc2:wa_conj
+wa/SUB_CONJ	prc2:wa_sub
+wa/PART		prc2:wa_part
+;;
+fa/CONJ		prc2:fa_conj
+fa/SUB_CONJ	prc2:fa_sub
+fa/CONNEC_PART	prc2:fa_conn
+fa/RC_PART	prc2:fa_rc
+;;
+wa/PREP		prc1:wa_prep
+bi/PREP		prc1:bi_prep
+bi/PART		prc1:bi_part
+la/PREP		prc1:la_prep
+la/EMPH_PART	prc1:la_emph
+la/EMPHATIC_PARTICLE	prc1:la_emph
+la/RC_PART	prc1:la_rc
+la/RESULT_CLAUSE_PARTICLE	prc1:la_rc
+li/PREP		prc1:li_prep
+;;odd decision - made consistent with SAMA3.1:
+li/SUBJUNC	prc1:li_prep
+
+li/JUS		prc1:li_jus
+ka/PREP		prc1:ka_prep
+ta/PREP		prc1:ta_prep
+sa/FUT	prc1:sa_fut pos:verb asp:i mod:i
+fiy/PREP	prc1:fiy_prep
+
+mA/NEG_PART	prc0:mA_neg
+lA/NEG_PART	prc0:lA_neg
+
+Al/DET		prc0:Al_det stt:d
+
+
+IV1S	pos:verb asp:i per:1 num:s
+IV1P	pos:verb asp:i per:1 num:p
+IV2MS	pos:verb asp:i per:2 gen:m num:s
+IV2FS	pos:verb asp:i per:2 gen:f num:s
+IV2D	pos:verb asp:i per:2 num:d
+IV2MP	pos:verb asp:i per:2 gen:m num:p
+IV2FP	pos:verb asp:i per:2 gen:f num:p
+IV3MS	pos:verb asp:i per:3 gen:m num:s
+IV3FS	pos:verb asp:i per:3 gen:f num:s
+IV3MD	pos:verb asp:i per:3 gen:m num:d
+IV3FD	pos:verb asp:i per:3 gen:f num:d
+IV3MP	pos:verb asp:i per:3 gen:m num:p
+IV3FP	pos:verb asp:i per:3 gen:f num:p
+
+MAP SUFFIXES
+
+
+a/CASE_DEF_ACC+hA/POSS_PRON_3FS	 cas:a enc0:3fs_poss stt:c
+a/CASE_DEF_ACC+humA/POSS_PRON_3D	 cas:a enc0:3d_poss stt:c
+a/CASE_DEF_ACC+hum/POSS_PRON_3MP	 cas:a enc0:3mp_poss stt:c
+a/CASE_DEF_ACC+hun~a/POSS_PRON_3FP	 cas:a enc0:3fp_poss stt:c
+a/CASE_DEF_ACC+hu/POSS_PRON_3MS	 cas:a enc0:3ms_poss stt:c
+a/CASE_DEF_ACC+ka/POSS_PRON_2MS	 cas:a enc0:2ms_poss stt:c
+a/CASE_DEF_ACC+ki/POSS_PRON_2FS	 cas:a enc0:2fs_poss stt:c
+a/CASE_DEF_ACC+kumA/POSS_PRON_2D	 cas:a enc0:2d_poss stt:c
+a/CASE_DEF_ACC+kum/POSS_PRON_2MP	 cas:a enc0:2mp_poss stt:c
+a/CASE_DEF_ACC+kun~a/POSS_PRON_2FP	 cas:a enc0:2fp_poss stt:c
+a/CASE_DEF_ACC+nA/POSS_PRON_1P	 cas:a enc0:1p_poss stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_ACC+hA/POSS_PRON_3FS	 cas:a enc0:3fs_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_ACC+himA/POSS_PRON_3D	 cas:a enc0:3d_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_ACC+him/POSS_PRON_3MP	 cas:a enc0:3mp_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_ACC+hin~a/POSS_PRON_3FP	 cas:a enc0:3fp_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_ACC+hi/POSS_PRON_3MS	 cas:a enc0:3ms_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_ACC+ka/POSS_PRON_2MS	 cas:a enc0:2ms_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_ACC+ki/POSS_PRON_2FS	 cas:a enc0:2fs_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_ACC+kumA/POSS_PRON_2D	 cas:a enc0:2d_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_ACC+kum/POSS_PRON_2MP	 cas:a enc0:2mp_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_ACC+kun~a/POSS_PRON_2FP	 cas:a enc0:2fp_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_ACC+nA/POSS_PRON_1P	 cas:a enc0:1p_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_GEN+hA/POSS_PRON_3FS	 cas:g enc0:3fs_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_GEN+himA/POSS_PRON_3D	 cas:g enc0:3d_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_GEN+him/POSS_PRON_3MP	 cas:g enc0:3mp_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_GEN+hin~a/POSS_PRON_3FP	 cas:g enc0:3fp_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_GEN+hi/POSS_PRON_3MS	 cas:g enc0:3ms_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_GEN+ka/POSS_PRON_2MS	 cas:g enc0:2ms_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_GEN+ki/POSS_PRON_2FS	 cas:g enc0:2fs_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_GEN+kumA/POSS_PRON_2D	 cas:g enc0:2d_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_GEN+kum/POSS_PRON_2MP	 cas:g enc0:2mp_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_GEN+kun~a/POSS_PRON_2FP	 cas:g enc0:2fp_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+i/CASE_DEF_GEN+nA/POSS_PRON_1P	 cas:g enc0:1p_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+u/CASE_DEF_NOM+hA/POSS_PRON_3FS	 cas:n enc0:3fs_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+u/CASE_DEF_NOM+humA/POSS_PRON_3D	 cas:n enc0:3d_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+u/CASE_DEF_NOM+hum/POSS_PRON_3MP	 cas:n enc0:3mp_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+u/CASE_DEF_NOM+hun~a/POSS_PRON_3FP	 cas:n enc0:3fp_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+u/CASE_DEF_NOM+hu/POSS_PRON_3MS	 cas:n enc0:3ms_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+u/CASE_DEF_NOM+ka/POSS_PRON_2MS	 cas:n enc0:2ms_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+u/CASE_DEF_NOM+ki/POSS_PRON_2FS	 cas:n enc0:2fs_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+u/CASE_DEF_NOM+kumA/POSS_PRON_2D	 cas:n enc0:2d_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+u/CASE_DEF_NOM+kum/POSS_PRON_2MP	 cas:n enc0:2mp_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+u/CASE_DEF_NOM+kun~a/POSS_PRON_2FP	 cas:n enc0:2fp_poss gen:f num:p stt:c
+At/NSUFF_FEM_PL+u/CASE_DEF_NOM+nA/POSS_PRON_1P	 cas:n enc0:1p_poss gen:f num:p stt:c
+at/NSUFF_FEM_SG+a/CASE_DEF_ACC+hA/POSS_PRON_3FS	 cas:a enc0:3fs_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+a/CASE_DEF_ACC+humA/POSS_PRON_3D	 cas:a enc0:3d_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+a/CASE_DEF_ACC+hum/POSS_PRON_3MP	 cas:a enc0:3mp_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+a/CASE_DEF_ACC+hun~a/POSS_PRON_3FP	 cas:a enc0:3fp_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+a/CASE_DEF_ACC+hu/POSS_PRON_3MS	 cas:a enc0:3ms_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+a/CASE_DEF_ACC+ka/POSS_PRON_2MS	 cas:a enc0:2ms_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+a/CASE_DEF_ACC+ki/POSS_PRON_2FS	 cas:a enc0:2fs_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+a/CASE_DEF_ACC+kumA/POSS_PRON_2D	 cas:a enc0:2d_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+a/CASE_DEF_ACC+kum/POSS_PRON_2MP	 cas:a enc0:2mp_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+a/CASE_DEF_ACC+kun~a/POSS_PRON_2FP	 cas:a enc0:2fp_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+a/CASE_DEF_ACC+nA/POSS_PRON_1P	 cas:a enc0:1p_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+i/CASE_DEF_GEN+hA/POSS_PRON_3FS	 cas:g enc0:3fs_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+i/CASE_DEF_GEN+himA/POSS_PRON_3D	 cas:g enc0:3d_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+i/CASE_DEF_GEN+him/POSS_PRON_3MP	 cas:g enc0:3mp_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+i/CASE_DEF_GEN+hin~a/POSS_PRON_3FP	 cas:g enc0:3fp_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+i/CASE_DEF_GEN+hi/POSS_PRON_3MS	 cas:g enc0:3ms_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+i/CASE_DEF_GEN+ka/POSS_PRON_2MS	 cas:g enc0:2ms_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+i/CASE_DEF_GEN+ki/POSS_PRON_2FS	 cas:g enc0:2fs_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+i/CASE_DEF_GEN+kumA/POSS_PRON_2D	 cas:g enc0:2d_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+i/CASE_DEF_GEN+kum/POSS_PRON_2MP	 cas:g enc0:2mp_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+i/CASE_DEF_GEN+kun~a/POSS_PRON_2FP	 cas:g enc0:2fp_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+i/CASE_DEF_GEN+nA/POSS_PRON_1P	 cas:g enc0:1p_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+u/CASE_DEF_NOM+hA/POSS_PRON_3FS	 cas:n enc0:3fs_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+u/CASE_DEF_NOM+humA/POSS_PRON_3D	 cas:n enc0:3d_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+u/CASE_DEF_NOM+hum/POSS_PRON_3MP	 cas:n enc0:3mp_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+u/CASE_DEF_NOM+hun~a/POSS_PRON_3FP	 cas:n enc0:3fp_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+u/CASE_DEF_NOM+hu/POSS_PRON_3MS	 cas:n enc0:3ms_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+u/CASE_DEF_NOM+ka/POSS_PRON_2MS	 cas:n enc0:2ms_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+u/CASE_DEF_NOM+ki/POSS_PRON_2FS	 cas:n enc0:2fs_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+u/CASE_DEF_NOM+kumA/POSS_PRON_2D	 cas:n enc0:2d_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+u/CASE_DEF_NOM+kum/POSS_PRON_2MP	 cas:n enc0:2mp_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+u/CASE_DEF_NOM+kun~a/POSS_PRON_2FP	 cas:n enc0:2fp_poss gen:f num:s stt:c
+at/NSUFF_FEM_SG+u/CASE_DEF_NOM+nA/POSS_PRON_1P	 cas:n enc0:1p_poss gen:f num:s stt:c
+i/CASE_DEF_GEN+hA/POSS_PRON_3FS	 cas:g enc0:3fs_poss stt:c
+i/CASE_DEF_GEN+himA/POSS_PRON_3D	 cas:g enc0:3d_poss stt:c
+i/CASE_DEF_GEN+him/POSS_PRON_3MP	 cas:g enc0:3mp_poss stt:c
+i/CASE_DEF_GEN+hin~a/POSS_PRON_3FP	 cas:g enc0:3fp_poss stt:c
+i/CASE_DEF_GEN+hi/POSS_PRON_3MS	 cas:g enc0:3ms_poss stt:c
+i/CASE_DEF_GEN+ka/POSS_PRON_2MS	 cas:g enc0:2ms_poss stt:c
+i/CASE_DEF_GEN+ki/POSS_PRON_2FS	 cas:g enc0:2fs_poss stt:c
+i/CASE_DEF_GEN+kumA/POSS_PRON_2D	 cas:g enc0:2d_poss stt:c
+i/CASE_DEF_GEN+kum/POSS_PRON_2MP	 cas:g enc0:2mp_poss stt:c
+i/CASE_DEF_GEN+kun~a/POSS_PRON_2FP	 cas:g enc0:2fp_poss stt:c
+i/CASE_DEF_GEN+nA/POSS_PRON_1P	 cas:g enc0:1p_poss stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_ACC+hA/POSS_PRON_3FS	 cas:a enc0:3fs_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_ACC+himA/POSS_PRON_3D	 cas:a enc0:3d_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_ACC+him/POSS_PRON_3MP	 cas:a enc0:3mp_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_ACC+hin~a/POSS_PRON_3FP	 cas:a enc0:3fp_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_ACC+hi/POSS_PRON_3MS	 cas:a enc0:3ms_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_ACC+ka/POSS_PRON_2MS	 cas:a enc0:2ms_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_ACC+ki/POSS_PRON_2FS	 cas:a enc0:2fs_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_ACC+kumA/POSS_PRON_2D	 cas:a enc0:2d_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_ACC+kum/POSS_PRON_2MP	 cas:a enc0:2mp_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_ACC+kun~a/POSS_PRON_2FP	 cas:a enc0:2fp_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_ACC+nA/POSS_PRON_1P	 cas:a enc0:1p_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_GEN+hA/POSS_PRON_3FS	 cas:g enc0:3fs_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_GEN+himA/POSS_PRON_3D	 cas:g enc0:3d_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_GEN+him/POSS_PRON_3MP	 cas:g enc0:3mp_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_GEN+hin~a/POSS_PRON_3FP	 cas:g enc0:3fp_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_GEN+hi/POSS_PRON_3MS	 cas:g enc0:3ms_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_GEN+ka/POSS_PRON_2MS	 cas:g enc0:2ms_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_GEN+ki/POSS_PRON_2FS	 cas:g enc0:2fs_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_GEN+kumA/POSS_PRON_2D	 cas:g enc0:2d_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_GEN+kum/POSS_PRON_2MP	 cas:g enc0:2mp_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_GEN+kun~a/POSS_PRON_2FP	 cas:g enc0:2fp_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+i/CASE_DEF_GEN+nA/POSS_PRON_1P	 cas:g enc0:1p_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+u/CASE_DEF_NOM+hA/POSS_PRON_3FS	 cas:n enc0:3fs_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+u/CASE_DEF_NOM+humA/POSS_PRON_3D	 cas:n enc0:3d_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+u/CASE_DEF_NOM+hum/POSS_PRON_3MP	 cas:n enc0:3mp_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+u/CASE_DEF_NOM+hun~a/POSS_PRON_3FP	 cas:n enc0:3fp_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+u/CASE_DEF_NOM+hu/POSS_PRON_3MS	 cas:n enc0:3ms_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+u/CASE_DEF_NOM+ka/POSS_PRON_2MS	 cas:n enc0:2ms_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+u/CASE_DEF_NOM+ki/POSS_PRON_2FS	 cas:n enc0:2fs_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+u/CASE_DEF_NOM+kumA/POSS_PRON_2D	 cas:n enc0:2d_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+u/CASE_DEF_NOM+kum/POSS_PRON_2MP	 cas:n enc0:2mp_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+u/CASE_DEF_NOM+kun~a/POSS_PRON_2FP	 cas:n enc0:2fp_poss gen:f num:p stt:c
+|t/NSUFF_FEM_PL+u/CASE_DEF_NOM+nA/POSS_PRON_1P	 cas:n enc0:1p_poss gen:f num:p stt:c
+u/CASE_DEF_NOM+hA/POSS_PRON_3FS	 cas:n enc0:3fs_poss stt:c
+u/CASE_DEF_NOM+humA/POSS_PRON_3D	 cas:n enc0:3d_poss stt:c
+u/CASE_DEF_NOM+hum/POSS_PRON_3MP	 cas:n enc0:3mp_poss stt:c
+u/CASE_DEF_NOM+hun~a/POSS_PRON_3FP	 cas:n enc0:3fp_poss stt:c
+u/CASE_DEF_NOM+hu/POSS_PRON_3MS	 cas:n enc0:3ms_poss stt:c
+u/CASE_DEF_NOM+ka/POSS_PRON_2MS	 cas:n enc0:2ms_poss stt:c
+u/CASE_DEF_NOM+ki/POSS_PRON_2FS	 cas:n enc0:2fs_poss stt:c
+u/CASE_DEF_NOM+kumA/POSS_PRON_2D	 cas:n enc0:2d_poss stt:c
+u/CASE_DEF_NOM+kum/POSS_PRON_2MP	 cas:n enc0:2mp_poss stt:c
+u/CASE_DEF_NOM+kun~a/POSS_PRON_2FP	 cas:n enc0:2fp_poss stt:c
+u/CASE_DEF_NOM+nA/POSS_PRON_1P	 cas:n enc0:1p_poss stt:c
+
+PVSUFF_DO:1P    pos:verb asp:p mod:i enc0:1p_dobj
+PVSUFF_DO:1S    pos:verb asp:p mod:i enc0:1s_dobj
+PVSUFF_DO:2D    pos:verb asp:p mod:i enc0:2d_dobj
+PVSUFF_DO:2FP   pos:verb asp:p mod:i enc0:2fp_dobj
+PVSUFF_DO:2FS   pos:verb asp:p mod:i enc0:2fs_dobj
+PVSUFF_DO:2MP   pos:verb asp:p mod:i enc0:2mp_dobj
+PVSUFF_DO:2MS   pos:verb asp:p mod:i enc0:2ms_dobj
+PVSUFF_DO:3D    pos:verb asp:p mod:i enc0:3d_dobj
+PVSUFF_DO:3FP   pos:verb asp:p mod:i enc0:3fp_dobj
+PVSUFF_DO:3FS   pos:verb asp:p mod:i enc0:3fs_dobj
+PVSUFF_DO:3MP   pos:verb asp:p mod:i enc0:3mp_dobj
+PVSUFF_DO:3MS   pos:verb asp:p mod:i enc0:3ms_dobj
+PVSUFF_SUBJ:1P	pos:verb asp:p mod:i per:1 num:p
+PVSUFF_SUBJ:1S	pos:verb asp:p mod:i per:1 num:s
+PVSUFF_SUBJ:2D	pos:verb asp:p mod:i per:2 num:d
+PVSUFF_SUBJ:2FP	pos:verb asp:p mod:i per:2 gen:f num:p
+PVSUFF_SUBJ:2FS pos:verb asp:p mod:i per:2 gen:f num:s
+PVSUFF_SUBJ:2MP pos:verb asp:p mod:i per:2 gen:m num:p
+PVSUFF_SUBJ:2MS pos:verb asp:p mod:i per:2 gen:m num:s
+PVSUFF_SUBJ:3FD pos:verb asp:p mod:i per:3 gen:f num:d
+PVSUFF_SUBJ:3FP pos:verb asp:p mod:i per:3 gen:f num:p
+PVSUFF_SUBJ:3FS pos:verb asp:p mod:i per:3 gen:f num:s
+PVSUFF_SUBJ:3MD pos:verb asp:p mod:i per:3 gen:m num:d
+PVSUFF_SUBJ:3MP pos:verb asp:p mod:i per:3 gen:m num:p
+PVSUFF_SUBJ:3MS pos:verb asp:p mod:i per:3 gen:m num:s
+
+
+IVSUFF_DO:1P    pos:verb asp:i enc0:1p_dobj
+IVSUFF_DO:1S    pos:verb asp:i enc0:1s_dobj
+IVSUFF_DO:2D    pos:verb asp:i enc0:2d_dobj
+IVSUFF_DO:2FP   pos:verb asp:i enc0:2fp_dobj
+IVSUFF_DO:2FS   pos:verb asp:i enc0:2fs_dobj
+IVSUFF_DO:2MP   pos:verb asp:i enc0:2mp_dobj
+IVSUFF_DO:2MS   pos:verb asp:i enc0:2ms_dobj
+IVSUFF_DO:3D    pos:verb asp:i enc0:3d_dobj
+IVSUFF_DO:3FP   pos:verb asp:i enc0:3fp_dobj
+IVSUFF_DO:3FS   pos:verb asp:i enc0:3fs_dobj
+IVSUFF_DO:3MP   pos:verb asp:i enc0:3mp_dobj
+IVSUFF_DO:3MS   pos:verb asp:i enc0:3ms_dobj
+
+;; this is odd:
+IVSUFF_MOOD:I	pos:verb asp:i mod:i
+IVSUFF_MOOD:J	pos:verb asp:i mod:j
+IVSUFF_MOOD:S	pos:verb asp:i mod:s
+IVSUFF_SUBJ:2FS_MOOD:I	pos:verb asp:i mod:i per:2 gen:f num:s
+IVSUFF_SUBJ:2FS_MOOD:SJ	pos:verb asp:i mod:s per:2 gen:f num:s
+IVSUFF_SUBJ:2FS_MOOD:SJ	pos:verb asp:i mod:j per:2 gen:f num:s
+;IVSUFF_SUBJ:2FS_MOOD:SJ	pos:verb asp:i per:2 gen:f num:s
+
+IVSUFF_SUBJ:3D	pos:verb asp:i per:3 num:d
+IVSUFF_SUBJ:3D_MOOD:I	 pos:verb asp:i per:3 num:d mod:i
+IVSUFF_SUBJ:3FP		 pos:verb asp:i per:3 gen:f num:p
+IVSUFF_SUBJ:3MP_MOOD:I	 pos:verb asp:i mod:i per:3 gen:m num:p
+IVSUFF_SUBJ:3MP_MOOD:SJ	 pos:verb asp:i mod:s per:3 gen:m num:p
+IVSUFF_SUBJ:3MP_MOOD:SJ	 pos:verb asp:i mod:j per:3 gen:m num:p
+;IVSUFF_SUBJ:3MP_MOOD:SJ	 pos:verb asp:i per:3 gen:m num:p
+
+IVSUFF_SUBJ:D_MOOD:I	 pos:verb asp:i num:d mod:i
+IVSUFF_SUBJ:D_MOOD:SJ	 pos:verb asp:i num:d mod:s
+IVSUFF_SUBJ:D_MOOD:SJ	 pos:verb asp:i num:d mod:j
+;IVSUFF_SUBJ:D_MOOD:SJ	 pos:verb asp:i num:d
+
+IVSUFF_SUBJ:FP		 pos:verb asp:i num:p gen:f
+IVSUFF_SUBJ:MP_MOOD:I	 pos:verb asp:i num:p gen:m mod:i
+IVSUFF_SUBJ:MP_MOOD:SJ	 pos:verb asp:i num:p gen:m mod:s
+IVSUFF_SUBJ:MP_MOOD:SJ	 pos:verb asp:i num:p gen:m mod:j
+;IVSUFF_SUBJ:MP_MOOD:SJ	 pos:verb asp:i num:p gen:m 
+
+CVSUFF_DO:1S	pos:verb asp:c mod:i enc0:1s_dobj
+CVSUFF_DO:1P	pos:verb asp:c mod:i enc0:1p_dobj
+CVSUFF_DO:3MS	pos:verb asp:c mod:i enc0:3ms_dobj
+CVSUFF_DO:3FS	pos:verb asp:c mod:i enc0:3fs_dobj
+CVSUFF_DO:3D	pos:verb asp:c mod:i enc0:3d_dobj
+CVSUFF_DO:3MP	pos:verb asp:c mod:i enc0:3mp_dobj
+CVSUFF_DO:3FP	pos:verb asp:c mod:i enc0:3fp_dobj
+CVSUFF_SUBJ:2MS	pos:verb asp:c mod:i per:2 gen:m num:s
+CVSUFF_SUBJ:2FS	pos:verb asp:c mod:i per:2 gen:f num:s
+CVSUFF_SUBJ:2MP	pos:verb asp:c mod:i per:2 gen:m num:p
+
+
+;NSUFF_FEM_DU_ACC	 gen:f num:d cas:a stt:d
+;NSUFF_FEM_DU_ACC	 gen:f num:d cas:a stt:i
+NSUFF_FEM_DU_ACC	 gen:f num:d cas:a
+NSUFF_FEM_DU_ACC_POSS	 gen:f num:d cas:a stt:c
+
+;NSUFF_FEM_DU_GEN	 gen:f num:d cas:g stt:d
+;NSUFF_FEM_DU_GEN	 gen:f num:d cas:g stt:i
+NSUFF_FEM_DU_GEN	 gen:f num:d cas:g
+NSUFF_FEM_DU_GEN_POSS	 gen:f num:d cas:g stt:c
+
+NSUFF_FEM_DU_ACCGEN	 gen:f num:d cas:g
+NSUFF_FEM_DU_ACCGEN	 gen:f num:d cas:a
+NSUFF_FEM_DU_ACCGEN_POSS  gen:f num:d cas:g stt:c
+NSUFF_FEM_DU_ACCGEN_POSS  gen:f num:d cas:a stt:c
+
+;NSUFF_FEM_DU_NOM	 gen:f num:d cas:n stt:d
+;NSUFF_FEM_DU_NOM	 gen:f num:d cas:n stt:i
+NSUFF_FEM_DU_NOM	 gen:f num:d cas:n
+NSUFF_FEM_DU_NOM_POSS	 gen:f num:d cas:n stt:c
+
+NSUFF_FEM_PL	 	 gen:f num:p 
+NSUFF_FEM_SG	 	 gen:f num:s
+
+
+
+
+NSUFF_MASC_SG_ACC_INDEF  gen:m num:s cas:a stt:i
+
+;NSUFF_MASC_DU_ACC	gen:m num:d cas:a stt:d
+;NSUFF_MASC_DU_ACC	gen:m num:d cas:a stt:i
+NSUFF_MASC_DU_ACC	gen:m num:d cas:a 
+NSUFF_MASC_DU_ACC_POSS	gen:m num:d cas:a stt:c
+
+;NSUFF_MASC_DU_GEN	gen:m num:d cas:g stt:d
+;NSUFF_MASC_DU_GEN	gen:m num:d cas:g stt:i
+NSUFF_MASC_DU_GEN	gen:m num:d cas:g
+NSUFF_MASC_DU_GEN_POSS	gen:m num:d cas:g stt:c
+
+NSUFF_MASC_DU_ACCGEN	      gen:m num:d cas:g
+NSUFF_MASC_DU_ACCGEN	      gen:m num:d cas:a
+NSUFF_MASC_DU_ACCGEN_POSS     gen:m num:d cas:g stt:c
+NSUFF_MASC_DU_ACCGEN_POSS     gen:m num:d cas:a stt:c
+
+
+;NSUFF_MASC_DU_NOM	gen:m num:d cas:n stt:d
+;NSUFF_MASC_DU_NOM	gen:m num:d cas:n stt:i
+NSUFF_MASC_DU_NOM	gen:m num:d cas:n
+NSUFF_MASC_DU_NOM_POSS	gen:m num:d cas:n stt:c
+
+;NSUFF_MASC_PL_ACC	gen:m num:p cas:a stt:d
+;NSUFF_MASC_PL_ACC	gen:m num:p cas:a stt:i
+NSUFF_MASC_PL_ACC	gen:m num:p cas:a
+NSUFF_MASC_PL_ACC_POSS	gen:m num:p cas:a stt:c
+
+;NSUFF_MASC_PL_GEN	gen:m num:p cas:g stt:d
+;NSUFF_MASC_PL_GEN	gen:m num:p cas:g stt:i
+NSUFF_MASC_PL_GEN	gen:m num:p cas:g
+NSUFF_MASC_PL_GEN_POSS	gen:m num:p cas:g stt:c
+
+
+NSUFF_MASC_PL_ACCGEN	      gen:m num:p cas:g
+NSUFF_MASC_PL_ACCGEN	      gen:m num:p cas:a
+NSUFF_MASC_PL_ACCGEN_POSS     gen:m num:p cas:g stt:c
+NSUFF_MASC_PL_ACCGEN_POSS     gen:m num:p cas:a stt:c
+
+;NSUFF_MASC_PL_NOM	gen:m num:p cas:n stt:d
+;NSUFF_MASC_PL_NOM	gen:m num:p cas:n stt:i
+NSUFF_MASC_PL_NOM	gen:m num:p cas:n
+NSUFF_MASC_PL_NOM_POSS	gen:m num:p cas:n stt:c
+
+;CASE_DEF_ACC	stt:c cas:a
+;CASE_DEF_GEN	stt:c cas:g
+;CASE_DEF_NOM	stt:c cas:n
+
+CASE_DEF_ACC	stt:c cas:a
+CASE_DEF_GEN	stt:c cas:g
+CASE_DEF_NOM	stt:c cas:n
+
+CASE_INDEF_ACC	stt:i cas:a
+CASE_INDEF_GEN	stt:i cas:g
+CASE_INDEF_NOM	stt:i cas:n
+
+POSS_PRON_1P	enc0:1p_poss stt:c
+POSS_PRON_1S	enc0:1s_poss stt:c
+POSS_PRON_2D	enc0:2d_poss stt:c
+POSS_PRON_2FP	enc0:2fp_poss stt:c
+POSS_PRON_2FS	enc0:2fs_poss stt:c
+POSS_PRON_2MP	enc0:2mp_poss stt:c
+POSS_PRON_2MS	enc0:2ms_poss stt:c
+POSS_PRON_3D	enc0:3d_poss stt:c
+POSS_PRON_3FP	enc0:3fp_poss stt:c
+POSS_PRON_3FS	enc0:3fs_poss stt:c
+POSS_PRON_3MP	enc0:3mp_poss stt:c
+POSS_PRON_3MS	enc0:3ms_poss stt:c
+
+
+PRON_1P		enc0:1p_pron
+PRON_1S		enc0:1s_pron
+PRON_2D		enc0:2d_pron
+PRON_2FP	enc0:2fp_pron
+PRON_2FS	enc0:2fs_pron
+PRON_2MP	enc0:2mp_pron
+PRON_2MS	enc0:2ms_pron
+PRON_3D		enc0:3d_pron
+PRON_3FP	enc0:3fp_pron
+PRON_3FS	enc0:3fs_pron
+PRON_3MP	enc0:3mp_pron
+PRON_3MS	enc0:3ms_pron
+
+;=================================================
+;=================================================
+;=================================================
+;=================================================
+;=================================================
+;=================================================
+
+MAP STEMS
+
+;; more granularity?  // pos name main_sub
+;; some are automatically assigned... 
+
+
+;FUNCS
+;;@GlossCapital	pos:noun_prop
+
+
+
+PREP	    	pos:prep
+
+ADJ		pos:adj
+ADJ_COMP	pos:adj_comp
+ADJ_NUM		pos:adj_num
+
+NOUN		pos:noun
+NUM		pos:noun_num
+NOUN_QUANT	pos:noun_quant
+NOUN_PROP	pos:noun_prop
+
+ADV		pos:adv
+INTERROG_ADV	pos:adv_interrog
+REL_ADV		pos:adv_rel
+
+ABBREV		pos:abbrev
+
+VERB		pos:verb
+PSEUDO_VERB	pos:verb_pseudo
+VERB_PART	pos:part_verb
+
+
+PV		pos:verb asp:p vox:a
+PV_PASS		pos:verb asp:p vox:p
+IV		pos:verb asp:i vox:a
+IV_PASS		pos:verb asp:i vox:p
+CV		pos:verb asp:c vox:a
+
+VERB_IMPERFECT  	 pos:verb asp:i
+VERB_IMPERATIVE  	 pos:verb asp:c
+VERB_PERFECT		 pos:verb asp:p
+
+
+
+;;These are wrong or superfluous entries
+FOREIGN		pos:noun
+;;;FUNC_WORD	pos:noun
+
+<in/FUNC_WORD	pos:conj_sub
+<in~/FUNC_WORD	pos:conj_sub
+<in~a/FUNC_WORD	pos:verb_pseudo
+<iy~A/FUNC_WORD pos:part
+>an/FUNC_WORD	pos:conj_sub
+>an~/FUNC_WORD	pos:conj_sub
+>an~a/FUNC_WORD	pos:conj_sub
+>ay~AF/FUNC_WORD	pos:pron_rel
+>ay~atuhA/FUNC_WORD	pos:IGNORE
+>ay~uhA/FUNC_WORD	pos:IGNORE
+All~`hum~a/FUNC_WORD	pos:noun
+Eal~a/FUNC_WORD		pos:verb_pseudo
+Eam~an/FUNC_WORD	pos:IGNORE
+lArayoba/FUNC_WORD	pos:IGNORE
+la/EMPHATIC_PARTICLE+Eal~a/FUNC_WORD	pos:verb_pseudo prc1:la_emph 
+laqad/FUNC_WORD		pos:part_verb
+layota/FUNC_WORD	pos:verb_pseudo
+la}in~a/FUNC_WORD	pos:conj_sub prc1:la_emph 
+mAyurAm/FUNC_WORD	pos:IGNORE
+maboruwk/FUNC_WORD	pos:adj
+nAhiyk/FUNC_WORD	pos:verb
+qad/FUNC_WORD		pos:part_verb
+qul/FUNC_WORD		pos:verb
+rub~a/FUNC_WORD		pos:prep
+tatorA/FUNC_WORD	pos:IGNORE
+tatoraY/FUNC_WORD	pos:IGNORE
+yurAm/FUNC_WORD		asp:i mod:i vox:p per:3 gen:m num:s
+
+
+yanbagy/VERB		pos:verb asp:i mod:i vox:a per:3 gen:m num:s
+
+*aAna/DEM_PRON_MD	pos:pron_dem gen:m num:d cas:n
+*ayna/DEM_PRON_MD	pos:pron_dem gen:m num:d cas:a
+*ayna/DEM_PRON_MD	pos:pron_dem gen:m num:d cas:g
+*aAnika/DEM_PRON_MD	pos:pron_dem gen:m num:d cas:n
+*ayonaka/DEM_PRON_MD	pos:pron_dem gen:m num:d cas:a
+*ayonaka/DEM_PRON_MD	pos:pron_dem gen:m num:d cas:g
+
+*A/DEM_PRON_MS		pos:pron_dem gen:m num:s
+*A/DEM_PRON		pos:pron_dem gen:m num:s
+*Aka/DEM_PRON_MS	pos:pron_dem gen:m num:s
+hA/DEM_PRON		pos:pron_dem
+h`*A/DEM_PRON_MS	pos:pron_dem gen:m num:s
+
+h`*Ani/DEM_PRON_MD	pos:pron_dem gen:m num:d cas:n
+h`*ayoni/DEM_PRON_MD	pos:pron_dem gen:m num:d cas:a
+h`*ayoni/DEM_PRON_MD	pos:pron_dem gen:m num:d cas:g
+
+hAtAni/DEM_PRON_FD	pos:pron_dem gen:f num:d cas:n
+hAtayoni/DEM_PRON_FD	pos:pron_dem gen:f num:d cas:a
+hAtayoni/DEM_PRON_FD	pos:pron_dem gen:f num:d cas:g
+
+hAti/DEM_PRON_F		pos:pron_dem gen:f num:s
+hAtihi/DEM_PRON_F	pos:pron_dem gen:f num:s
+
+h`*ihi/DEM_PRON_F	pos:pron_dem gen:f num:s
+h`*iy/DEM_PRON_F	pos:pron_dem gen:f num:s
+h`&ulA'i/DEM_PRON_P	pos:pron_dem num:p
+
+*`lika/DEM_PRON_MS	pos:pron_dem gen:m num:s
+*alika/DEM_PRON_MS	pos:pron_dem gen:m num:s
+tiloka/DEM_PRON_F	pos:pron_dem gen:f num:s
+tilokum/DEM_PRON_FP	pos:pron_dem gen:f num:p
+*`likumA/DEM_PRON_D	pos:pron_dem num:d
+*`likum/DEM_PRON_MS	pos:pron_dem gen:m num:p
+*`likun~a/DEM_PRON_FP	pos:pron_dem gen:f num:p
+
+tAka/DEM_PRON_FS	pos:pron_dem gen:f num:s cas:n
+tiyka/DEM_PRON_FS	pos:pron_dem gen:f num:s cas:a
+tiyka/DEM_PRON_FS	pos:pron_dem gen:f num:s cas:g
+tAni/DEM_PRON_FD	pos:pron_dem gen:f num:d cas:n
+tayoni/DEM_PRON_FD	pos:pron_dem gen:f num:d cas:a
+tayoni/DEM_PRON_FD	pos:pron_dem gen:f num:d cas:g
+tAnika/DEM_PRON_FS	pos:pron_dem gen:f num:d cas:n
+tayonika/DEM_PRON_FS	pos:pron_dem gen:f num:d cas:a
+tayonika/DEM_PRON_FS	pos:pron_dem gen:f num:d cas:g
+
+>uwlA'i/DEM_PRON_P	pos:pron_dem num:p
+>uwlA}ika/DEM_PRON_MP	pos:pron_dem gen:m num:p
+>uwlA}ikum/DEM_PRON_MP	pos:pron_dem gen:m num:p
+
+
+EXCLAM_PRON		pos:pron_exclam
+INTERROG_PRON		pos:pron_interrog
+
+PRON_1P		pos:pron cas:n per:1 num:p
+PRON_1S		pos:pron cas:n per:1 num:s
+PRON_2D		pos:pron cas:n per:2 num:d
+PRON_2FP	pos:pron cas:n per:2 num:p gen:f
+PRON_2FS	pos:pron cas:n per:2 num:s gen:f
+PRON_2MP	pos:pron cas:n per:2 num:p gen:m
+PRON_2MS	pos:pron cas:n per:2 num:s gen:m
+PRON_3D		pos:pron cas:n per:3 num:d
+PRON_3FP	pos:pron cas:n per:3 num:p gen:f
+PRON_3FS	pos:pron cas:n per:3 num:s gen:f
+PRON_3MP	pos:pron cas:n per:3 num:p gen:m
+PRON_3MS	pos:pron cas:n per:3 num:s gen:m
+
+
+Al~a*iy/REL_PRON	pos:pron_rel gen:m num:s
+Al~atiy/REL_PRON	pos:pron_rel gen:f num:s
+Al~a*iyna/REL_PRON	pos:pron_rel gen:m num:p
+Al~a*ayoni/REL_PRON	pos:pron_rel gen:m num:d cas:a
+Al~a*ayoni/REL_PRON	pos:pron_rel gen:m num:d cas:g
+All~a*Ani/REL_PRON	pos:pron_rel gen:m num:d cas:n
+All~a*ayoni/REL_PRON	pos:pron_rel gen:m num:s cas:a
+All~a*ayoni/REL_PRON	pos:pron_rel gen:m num:s cas:g
+All~atAni/REL_PRON	pos:pron_rel gen:f num:d cas:n
+All~atayoni/REL_PRON	pos:pron_rel gen:f num:d cas:a
+All~atayoni/REL_PRON	pos:pron_rel gen:f num:d cas:g
+All~Atiy/REL_PRON	pos:pron_rel gen:f num:p
+All~awAtiy/REL_PRON	pos:pron_rel gen:f num:p
+All~A}iy/REL_PRON	pos:pron_rel gen:f num:p
+REL_PRON		pos:pron_rel
+
+
+FOCUS_PART	pos:part_focus
+FUT_PART	pos:part_fut
+INTERROG_PART	pos:part_interrog
+NEG_PART	pos:part_neg
+PART		pos:part
+EXCEPT_PART	pos:part_restrict
+VOC_PART	pos:part_voc
+
+Al/DET		pos:part_det
+
+CONJ		pos:conj
+SUB_CONJ	pos:conj_sub
+
+
+INTERJ		pos:interj
+NUMERIC_COMMA	pos:punc
+
+
+hA/INTERJ+naHonu/PRON_1P	 pos:pron cas:n per:1 num:p prc1:hA_dem
+hA/INTERJ+>anA/PRON_1S	 pos:pron cas:n per:1 num:s prc1:hA_dem
+hA/INTERJ+humA/PRON_3D	 pos:pron cas:n per:3 num:d prc1:hA_dem
+hA/INTERJ+hiya/PRON_3FS	 pos:pron cas:n per:3 gen:f num:s prc1:hA_dem
+hA/INTERJ+hum/PRON_3MP	 pos:pron cas:n per:3 gen:m num:p prc1:hA_dem
+hA/INTERJ+huwa/PRON_3MS	 pos:pron cas:n per:3 gen:m num:s prc1:hA_dem
+
+;hA
+;diac:hA lex:hA_1
+;diac:hAhuwa lex:hA_1
+;diac:hAhiya lex:hA_1
+;diac:hAhumA lex:hA_1
+;diac:hAhum lex:hA_1
+;diac:hA>anA lex:hA_1
+;diac:hAnaHonu lex:hA_1
+
+
+>ab/NOUN+iy/POSS_PRON_1S	pos:noun gen:m num:s stt:c enc0:1s_poss
+>ax/NOUN+iy/POSS_PRON_1S	pos:noun gen:m num:s stt:c enc0:1s_poss
+bunay~/NOUN+ya/POSS_PRON_1S	pos:noun gen:m num:s stt:c enc0:1s_poss
+Ham/NOUN+iy/POSS_PRON_1S	pos:noun gen:m num:s stt:c enc0:1s_poss
+xuway~/NOUN+iy/POSS_PRON_1S	pos:noun gen:m num:s stt:c enc0:1s_poss
+
+
+wayo/INTERJ+ka/PRON_2MS	 	pos:noun enc0:2ms_pron stt:c
+wayo/INTERJ+ki/PRON_2FS	 	pos:noun enc0:2fs_pron stt:c
+wayo/INTERJ+kum/PRON_2MP	 	pos:noun enc0:2mp_pron stt:c
+wayo/INTERJ+kumA/PRON_2D	 	pos:noun enc0:2d_pron stt:c
+wayo/INTERJ+kun~a/PRON_2FP	pos:noun enc0:2fp_pron stt:c
+
+wayoHa/INTERJ+ka/PRON_2MS	 	pos:noun enc0:2ms_pron stt:c
+wayoHa/INTERJ+ki/PRON_2FS	 	pos:noun enc0:2fs_pron stt:c
+wayoHa/INTERJ+kum/PRON_2MP	pos:noun enc0:2mp_pron stt:c
+wayoHa/INTERJ+kumA/PRON_2D	pos:noun enc0:2d_pron stt:c
+wayoHa/INTERJ+kun~a/PRON_2FP	pos:noun enc0:2fp_pron stt:c
+
+HanAnay/INTERJ+ka/PRON_2MS	 pos:interj enc0:2ms_pron
+HanAnay/INTERJ+ki/PRON_2FS	 pos:interj enc0:2fs_pron
+HanAnay/INTERJ+kum/PRON_2MP	 pos:interj enc0:2mp_pron
+HanAnay/INTERJ+kumA/PRON_2D	 pos:interj enc0:2d_pron
+HanAnay/INTERJ+kun~a/PRON_2FP	 pos:interj enc0:2fp_pron
+
+
+kilA/NOUN+kumA/PRON_2D	pos:noun_quant gen:m num:d cas:n enc0:2d_pron
+kilay/NOUN+kumA/PRON_2D	pos:noun_quant gen:m num:d cas:a enc0:2d_pron
+kilay/NOUN+kumA/PRON_2D	pos:noun_quant gen:m num:d cas:g enc0:2d_pron
+
+kilotA/NOUN+kumA/PRON_2D	pos:noun_quant gen:f num:d cas:n enc0:2d_pron
+kilotay/NOUN+kumA/PRON_2D	pos:noun_quant gen:f num:d cas:a enc0:2d_pron
+kilotay/NOUN+kumA/PRON_2D	pos:noun_quant gen:f num:d cas:g enc0:2d_pron
+
+kilA/NOUN+humA/PRON_3D	pos:noun_quant gen:m num:d cas:n enc0:3d_pron
+kilay/NOUN+himA/PRON_3D	pos:noun_quant gen:m num:d cas:a enc0:3d_pron
+kilay/NOUN+himA/PRON_3D	pos:noun_quant gen:m num:d cas:g enc0:3d_pron
+
+kilotA/NOUN+humA/PRON_3D	pos:noun_quant gen:f num:d cas:n enc0:3d_pron
+kilotay/NOUN+himA/PRON_3D	pos:noun_quant gen:f num:d cas:a enc0:3d_pron
+kilotay/NOUN+himA/PRON_3D	pos:noun_quant gen:f num:d cas:g enc0:3d_pron
+
+
+; Aramorph 1.2.1
+kilA/FUNC_WORD+kumA/PRON_2D	pos:noun_quant gen:m num:d cas:n enc0:2d_pron
+kilay/FUNC_WORD+kumA/PRON_2D	pos:noun_quant gen:m num:d cas:a enc0:2d_pron
+kilay/FUNC_WORD+kumA/PRON_2D	pos:noun_quant gen:m num:d cas:g enc0:2d_pron
+
+kilotA/FUNC_WORD+kumA/PRON_2D	pos:noun_quant gen:f num:d cas:n enc0:2d_pron
+kilotay/FUNC_WORD+kumA/PRON_2D	pos:noun_quant gen:f num:d cas:a enc0:2d_pron
+kilotay/FUNC_WORD+kumA/PRON_2D	pos:noun_quant gen:f num:d cas:g enc0:2d_pron
+
+kilA/FUNC_WORD+humA/PRON_3D	pos:noun_quant gen:m num:d cas:n enc0:3d_pron
+kilay/FUNC_WORD+himA/PRON_3D	pos:noun_quant gen:m num:d cas:a enc0:3d_pron
+kilay/FUNC_WORD+himA/PRON_3D	pos:noun_quant gen:m num:d cas:g enc0:3d_pron
+
+kilotA/FUNC_WORD+humA/PRON_3D	pos:noun_quant gen:f num:d cas:n enc0:3d_pron
+kilotay/FUNC_WORD+himA/PRON_3D	pos:noun_quant gen:f num:d cas:a enc0:3d_pron
+kilotay/FUNC_WORD+himA/PRON_3D	pos:noun_quant gen:f num:d cas:g enc0:3d_pron
+
+
+la/EMPHATIC_PARTICLE+TAlamA/CONJ  prc1:la_emph pos:conj
+
+
+la/EMPHATIC_PARTICLE+TAlamA/ADV	 prc1:la_emph pos:adv
+la/EMPHATIC_PARTICLE+mA/NEG_PART	 prc1:la_emph pos:part_neg
+la/EMPHATIC_PARTICLE+min/PREP	 prc1:la_emph pos:prep
+la/EMPHATIC_PARTICLE+}in~a/PSEUDO_VERB	 prc1:la_emph pos:verb_pseudo
+la/EMPHATIC_PARTICLE+}in/SUB_CONJ	 prc1:la_emph pos:conj_sub
+
+mA/NEG_PART+zAl/PV	 	 prc0:mA_neg pos:verb asp:p
+mA/NEG_PART+zil/PV	 	 prc0:mA_neg pos:verb asp:p
+lA/NEG_PART+$ak~a/NOUN		 prc0:lA_neg pos:noun
+lA/NEG_PART+siy~amA/ADV	 	 prc0:lA_neg pos:adv
+lA/NEG_PART+rayoba/NOUN	 	 prc0:lA_neg pos:noun
+;; bug in SAMA:
+>lA/NEG_PART+rayoba/NOUN	 	 prc0:lA_neg pos:noun
+;;ignore distinction:
+lA/PSEUDO_VERB+bud~a/NOUN	 prc0:lA_neg pos:noun
+
+
+bi/PREP+*A/DEM_PRON_MS	 	 prc1:bi_prep pos:pron_dem gen:m num:s
+
+bi/PREP+>an/FUNC_WORD	 	 prc1:bi_prep pos:conj_sub 
+bi/PREP+>an~/FUNC_WORD	 	 prc1:bi_prep pos:conj_sub
+bi/PREP+>an~a/FUNC_WORD	 	 prc1:bi_prep pos:conj_sub
+
+
+bi/PREP+All~`h/NOUN_PROP	 prc1:bi_prep pos:noun_prop
+
+bi/PREP+Al~a*iy/REL_PRON	 prc1:bi_prep pos:pron_rel gen:m num:s cas:g
+bi/PREP+Al~a*iyna/REL_PRON	 prc1:bi_prep pos:pron_rel gen:m num:p cas:g
+bi/PREP+Al~atiy/REL_PRON	 prc1:bi_prep pos:pron_rel gen:f num:s cas:g
+
+bi/PREP+Hayovu/REL_ADV	 prc1:bi_prep pos:adv_rel
+
+bi/PREP+hA/PRON_3FS	 pos:prep enc0:3fs_pron
+bi/PREP+hi/PRON_3MS	 pos:prep enc0:3ms_pron
+bi/PREP+him/PRON_3MP	 pos:prep enc0:3mp_pron
+bi/PREP+himA/PRON_3D	 pos:prep enc0:3d_pron
+bi/PREP+hin~a/PRON_3FP	 pos:prep enc0:3fp_pron
+bi/PREP+ka/PRON_2MS	 pos:prep enc0:2ms_pron
+bi/PREP+ki/PRON_2FS	 pos:prep enc0:2fs_pron
+bi/PREP+kum/PRON_2MP	 pos:prep enc0:2mp_pron
+bi/PREP+kumA/PRON_2D	 pos:prep enc0:2d_pron
+bi/PREP+kun~a/PRON_2FP	 pos:prep enc0:2fp_pron
+bi/PREP+nA/PRON_1P	 pos:prep enc0:1p_pron
+bi/PREP+ya/PRON_1S	 pos:prep enc0:1s_pron
+la/PREP+hA/PRON_3FS	 pos:prep enc0:3fs_pron
+la/PREP+hu/PRON_3MS	 pos:prep enc0:3ms_pron
+la/PREP+hum/PRON_3MP	 pos:prep enc0:3mp_pron
+la/PREP+humA/PRON_3D	 pos:prep enc0:3d_pron
+la/PREP+hun~a/PRON_3FP	 pos:prep enc0:3fp_pron
+la/PREP+ka/PRON_2MS	 pos:prep enc0:2ms_pron
+la/PREP+ki/PRON_2FS	 pos:prep enc0:2fs_pron
+la/PREP+kum/PRON_2MP	 pos:prep enc0:2mp_pron
+la/PREP+kumA/PRON_2D	 pos:prep enc0:2d_pron
+la/PREP+kun~a/PRON_2FP	 pos:prep enc0:2fp_pron
+la/PREP+nA/PRON_1P	 pos:prep enc0:1p_pron
+
+li-/PREP+*alika/DEM_PRON_MS	 prc1:li_prep pos:pron_dem gen:m num:s
+li/PREP+*A/DEM_PRON	 	 prc1:li_prep pos:pron_dem gen:m num:s
+
+li>an~/CONJ	 	 prc1:li_prep pos:conj_sub
+li>an~a/CONJ	 	 prc1:li_prep pos:conj_sub
+
+
+
+li/PREP+Al/DET	 		 prc1:li_prep pos:part_det
+li/PREP+All~`h/NOUN_PROP	 prc1:li_prep pos:noun_prop
+li/PREP+Al~a*iy/REL_PRON	 prc1:li_prep pos:pron_rel gen:m num:s
+li/PREP+Al~a*iyna/REL_PRON	 prc1:li_prep pos:pron_rel gen:m num:p cas:g
+li/PREP+Al~atiy/REL_PRON	 prc1:li_prep pos:pron_rel gen:f num:s
+li/PREP+kayo/SUB_CONJ	 	 prc1:li_prep pos:conj_sub
+li/PREP+kayomA/SUB_CONJ		 prc1:li_prep pos:conj_sub
+li/PREP+mA/REL_PRON	 	 prc1:li_prep pos:pron_rel
+li/PREP+y/PRON_1S	 	 pos:prep enc0:1s_pron
+li/PREP+ya/PRON_1S	 	 pos:prep enc0:1s_pron
+
+ka/PREP+*A/DEM_PRON_MS	 	 prc1:ka_prep pos:pron_dem gen:m num:s
+ka/PREP+>ano/SUB_CONJ	 	 prc1:ka_prep pos:conj_sub
+ka/PREP+Al~a*iy/REL_PRON	 prc1:ka_prep pos:pron_rel gen:m num:s
+ka/PREP+Al~a*iyna/REL_PRON	 prc1:ka_prep pos:pron_rel gen:m num:p cas:g
+ka/PREP+Al~atiy/REL_PRON	 prc1:ka_prep pos:pron_rel gen:f num:s
+
+
+; aramorph 1.2.1
+litaw~/ADV+iy/PRON_1S		prc1:li_prep gen:m num:s  enc0:1s_poss pos:noun 
+litaw~i/ADV+hA/PRON_3FS		prc1:li_prep gen:m num:s  enc0:3fs_poss pos:noun
+litaw~i/ADV+hi/PRON_3MS		prc1:li_prep gen:m num:s  enc0:3ms_poss pos:noun
+litaw~i/ADV+him/PRON_3MP	prc1:li_prep gen:m num:s  enc0:3mp_poss pos:noun
+litaw~i/ADV+himA/PRON_3D	prc1:li_prep gen:m num:s  enc0:3d_poss pos:noun
+litaw~i/ADV+hin~a/PRON_3FP	prc1:li_prep gen:m num:s  enc0:3fp_poss pos:noun
+litaw~i/ADV+ka/PRON_2MS		prc1:li_prep gen:m num:s  enc0:2ms_poss pos:noun
+litaw~i/ADV+ki/PRON_2FS		prc1:li_prep gen:m num:s  enc0:2fs_poss pos:noun
+litaw~i/ADV+kum/PRON_2MP	prc1:li_prep gen:m num:s  enc0:2mp_poss pos:noun
+litaw~i/ADV+kumA/PRON_2D	prc1:li_prep gen:m num:s  enc0:2d_poss pos:noun
+litaw~i/ADV+kun~a/PRON_2FP	prc1:li_prep gen:m num:s  enc0:2fp_poss pos:noun
+litaw~i/ADV+nA/PRON_1P		prc1:li_prep gen:m num:s  enc0:1p_poss pos:noun
+
+ladayo/PREP+hi/PRON_3MS		pos:noun gen:m num:s enc0:3ms_pron
+
+bi/PREP+lA/NEG_PART	 prc1:bi_prep pos:part_neg
+la/RC_PART+mA/NEG_PART	 prc1:la_rc pos:part_neg
+
+bi/PREP+lA/NEG_PART+$ak~/NOUN+K/CASE_INDEF_GEN	 prc1:bi_prep prc0:lA_neg pos:noun stt:i cas:g
+
+bi/PREP+mA/INTERROG_PRON	 prc1:bi_prep pos:pron_interrog
+bi/PREP+mA/SUB_CONJ	 prc1:bi_prep pos:conj_sub
+bi/PREP+ma/INTERROG_PRON	 prc1:bi_prep pos:pron_interrog
+bi/PREP+ma/REL_PRON	 prc1:bi_prep pos:pron_rel
+bi/PREP+ma/SUB_CONJ	 prc1:bi_prep pos:conj_sub
+
+;;spell!
+be/PREP+ma/INTERROG_PART 	 prc1:bi_prep pos:pron_interrog
+
+
+bi/PREP+{isom/NOUN+i/CASE_DEF_GEN	 prc1:bi_prep pos:noun 
+
+
+min/PREP+mA/INTERROG_PRON	 pos:prep enc0:mA_interrog
+min/PREP+mA/REL_PRON	 	 pos:prep enc0:mA_rel
+min/PREP+mA/SUB_CONJ	 	 pos:prep enc0:mA_sub
+min/PREP+ma/INTERROG_PART	 pos:prep enc0:ma_interrog
+min/PREP+ma/REL_PRON	 	 pos:prep enc0:ma_rel
+min/PREP+ma/SUB_CONJ	 	 pos:prep enc0:ma_sub
+min/PREP+man/INTERROG_PART	 pos:prep enc0:man_interrog
+min/PREP+man/REL_PRON	 	 pos:prep enc0:man_rel
+
+Ean/PREP+mA/INTERROG_PRON	 pos:prep enc0:mA_interrog
+Ean/PREP+mA/REL_PRON	 	 pos:prep enc0:mA_rel
+Ean/PREP+mA/SUB_CONJ	 	 pos:prep enc0:mA_sub
+Ean/PREP+ma/INTERROG_PRON	 pos:prep enc0:ma_interrog
+Ean/PREP+ma/REL_PRON	 	 pos:prep enc0:ma_rel
+Ean/PREP+ma/SUB_CONJ	 	 pos:prep enc0:ma_sub
+Ean/PREP+man/INTERROG_PRON	 pos:prep enc0:man_interrog
+Ean/PREP+man/REL_PRON	 	 pos:prep enc0:man_rel
+Eam~A/PREP			 pos:prep enc0:mA_interrog
+Eam~A/PREP			 pos:prep enc0:mA_rel
+Eam~A/PREP			 pos:prep enc0:mA_sub
+
+EalY/PREP+ma/INTERROG_PRON	 pos:prep enc0:ma_interrog
+EalY/PREP+ma/REL_PRON	 	 pos:prep enc0:ma_rel
+
+fiy/PREP+ma/INTERROG_PRON	 pos:prep enc0:ma_interrog
+fiy/PREP+~a/PRON_1S		 pos:prep enc0:1s_pron
+
+wA/VOC_PART+>asaf/NOUN+Ah/VOC_PART	 prc1:wA_voc pos:noun enc0:Ah_voc
+wA/VOC_PART+Harab/NOUN+Ah/VOC_PART	 prc1:wA_voc pos:noun enc0:Ah_voc
+wA/VOC_PART+gawov/NOUN+Ah/VOC_PART	 prc1:wA_voc pos:noun enc0:Ah_voc
+Harab/NOUN+Ah/VOC_PART	 pos:noun enc0:Ah_voc
+gawov/NOUN+Ah/VOC_PART	 pos:noun enc0:Ah_voc
+>asaf/NOUN+Ah/VOC_PART	 pos:noun enc0:Ah_voc
+
+baEoda/PREP+mA/REL_PRON	 	  lex:baEod_1 pos:noun  enc0:mA_rel
+baEodamA/CONJ			  lex:baEod_1 pos:noun  enc0:mA_sub 
+baEoda/PREP			  lex:baEod_1 pos:noun
+baEodu/ADV			  lex:baEod_1 pos:IGNORE 
+
+Einoda/SUB_CONJ+mA/REL_PRON	 lex:Einod_1 pos:noun enc0:mA_sub
+EinodamA/CONJ		 	 lex:Einod_1 pos:noun enc0:mA_sub
+Einoda/PREP			 lex:Einod_1 pos:noun
+
+
+bayona/PREP+mA/REL_PRON	 pos:noun  enc0:mA_rel
+
+mivola/SUB_CONJ+mA/REL_PRON	 pos:noun  enc0:mA_rel
+
+qabola/PREP+mA/SUB_CONJ	 pos:noun  enc0:mA_sub
+Hiyna/SUB_CONJ+mA/REL_PRON	 pos:noun  enc0:mA_rel
+
+qabola/SUB_CONJ+mA/REL_PRON	 pos:noun  enc0:mA_rel
+waqota/SUB_CONJ+mA/REL_PRON	 pos:noun  enc0:mA_rel
+Hiyna/PREP+mA/REL_PRON	 pos:noun  enc0:mA_rel
+
+duwna/PREP+mA/REL_PRON	 pos:noun  enc0:mA_rel
+Hasoba/PREP+mA/REL_PRON	 pos:noun  enc0:mA_rel
+
+kayofa/SUB_CONJ+mA/REL_PRON 	  pos:noun  enc0:mA_rel
+
+
+
+;;odd choice:
+qal~a/SUB_CONJ+mA/REL_PRON	 		 pos:verb asp:p gen:m per:3 num:s vox:a enc0:mA_sub
+<in~a/PSEUDO_VERB+mA/REL_PRON	 	 pos:verb_pseudo enc0:mA_rel
+>an~a/SUB_CONJ+mA/REL_PRON	 	 pos:conj_sub enc0:mA_rel
+
+wa/PREP+All~`h/NOUN_PROP	 prc1:wa_prep pos:noun_prop
+yA/VOC_PART+All~`h/NOUN	 prc1:yA_voc pos:noun
+
+mA/PART+lam/NEG_PART	 prc0:mA_part pos:part_neg
+mA/REL_PRON+baEod/PREP	 prc0:mA_rel pos:noun
+mA/REL_PRON+bayon/PREP	 prc0:mA_rel pos:noun
+
+likayo/SUB_CONJ+lA/NEG_PART	 pos:conj_sub enc0:lA_neg
+>an/SUB_CONJ+lA/NEG_PART	 pos:conj_sub enc0:lA_neg
+;ARAMORPH-1.2
+>an/CONJ+lA/NEG_PART	 	 pos:conj_sub enc0:lA_neg
+kayo/SUB_CONJ+lA/NEG_PART	 pos:conj_sub enc0:lA_neg
+hal/INTERROG_PART+lA/NEG_PART	 pos:part_interrog enc0:lA_neg
+
+
+>a/INTERROG_PART+>anota/PRON_2MS	 prc3:>a_ques pos:pron cas:n per:2 num:s gen:m
+>a/INTERROG_PART+>anoti/PRON_2FS	 prc3:>a_ques pos:pron cas:n per:2 num:s gen:f
+>a/INTERROG_PART+>anotum/PRON_2MP	 prc3:>a_ques pos:pron cas:n per:2 num:p gen:m
+>a/INTERROG_PART+>anotumA/PRON_2D	 prc3:>a_ques pos:pron cas:n per:2 num:d
+>a/INTERROG_PART+>anotun~a/PRON_2FP	 prc3:>a_ques pos:pron cas:n per:2 num:p gen:f
+
+
+>a/INTERROG_PART+fa/CONJ+lA/NEG_PART	     prc3:>a_ques prc2:fa_conj pos:part_neg
+>a/INTERROG_PART+h`ka*A/ADV	 	     prc3:>a_ques pos:adv
+>a/INTERROG_PART+kAn/PV			     prc3:>a_ques pos:verb asp:p
+>a/INTERROG_PART+lA/NEG_PART		     prc3:>a_ques pos:part_neg
+>a/INTERROG_PART+lamo/NEG_PART	 	     prc3:>a_ques pos:part_neg
+>a/INTERROG_PART+layosa/NEG_PART	     prc3:>a_ques pos:part_neg
+>a/INTERROG_PART+wa/PART+layosa/NEG_PART     prc3:>a_ques prc2:wa_part pos:part_neg
+
+
+; BAMA-2.0
+
+lAsiy~amA/ADV				pos:adv prc0:lA_neg
+
+>a/INTERROG_PART+las/PV+tu/PVSUFF_SUBJ:1S   	prc3:>a_ques pos:verb asp:p vox:a mod:i per:1 num:s
+>a/INTERROG_PART+las/PV+nA/PVSUFF_SUBJ:1P	prc3:>a_ques pos:verb asp:p vox:a mod:i per:1 num:p
+>a/INTERROG_PART+las/PV+ta/PVSUFF_SUBJ:2MS   	prc3:>a_ques pos:verb asp:p vox:a mod:i per:2 gen:m num:s
+>a/INTERROG_PART+las/PV+ti/PVSUFF_SUBJ:2FS   	prc3:>a_ques pos:verb asp:p vox:a mod:i per:2 gen:f num:s
+>a/INTERROG_PART+las/PV+tumA/PVSUFF_SUBJ:2FD   	prc3:>a_ques pos:verb asp:p vox:a mod:i per:2 gen:f num:d
+>a/INTERROG_PART+las/PV+tumA/PVSUFF_SUBJ:2MD   	prc3:>a_ques pos:verb asp:p vox:a mod:i per:2 gen:m num:d
+>a/INTERROG_PART+las/PV+tum/PVSUFF_SUBJ:2MP   	prc3:>a_ques pos:verb asp:p vox:a mod:i per:2 gen:m num:p
+>a/INTERROG_PART+las/PV+tun~a/PVSUFF_SUBJ:2FP   prc3:>a_ques pos:verb asp:p vox:a mod:i per:2 gen:f num:p
+>a/INTERROG_PART+las/PV+na/PVSUFF_SUBJ:3FP   	prc3:>a_ques pos:verb asp:p vox:a mod:i per:3 gen:f num:p
+>a/INTERROG_PART+layos/PV+a/PVSUFF_SUBJ:3MS  	prc3:>a_ques pos:verb asp:p vox:a mod:i per:3 gen:m num:s
+>a/INTERROG_PART+layos/PV+at/PVSUFF_SUBJ:3FS   	prc3:>a_ques pos:verb asp:p vox:a mod:i per:3 gen:f num:s
+>a/INTERROG_PART+layos/PV+A/PVSUFF_SUBJ:3MD   	prc3:>a_ques pos:verb asp:p vox:a mod:i per:3 gen:m num:d
+>a/INTERROG_PART+layos/PV+atA/PVSUFF_SUBJ:3FD   prc3:>a_ques pos:verb asp:p vox:a mod:i per:3 gen:f num:d
+>a/INTERROG_PART+layos/PV+uwA/PVSUFF_SUBJ:3MP   prc3:>a_ques pos:verb asp:p vox:a mod:i per:3 gen:m num:p
+
+;ARAMORPH-1.2
+>a/INTERROG_PART+laso/NEG_PART+tu/PVSUFF_SUBJ:1S   	prc3:>a_ques pos:verb asp:p vox:a mod:i per:1 num:s
+>a/INTERROG_PART+laso/NEG_PART+nA/PVSUFF_SUBJ:1P	prc3:>a_ques pos:verb asp:p vox:a mod:i per:1 num:p
+>a/INTERROG_PART+laso/NEG_PART+ta/PVSUFF_SUBJ:2MS   	prc3:>a_ques pos:verb asp:p vox:a mod:i per:2 gen:m num:s
+>a/INTERROG_PART+laso/NEG_PART+ti/PVSUFF_SUBJ:2FS   	prc3:>a_ques pos:verb asp:p vox:a mod:i per:2 gen:f num:s
+>a/INTERROG_PART+laso/NEG_PART+tumA/PVSUFF_SUBJ:2FD   prc3:>a_ques pos:verb asp:p vox:a mod:i per:2 gen:f num:d
+>a/INTERROG_PART+laso/NEG_PART+tumA/PVSUFF_SUBJ:2MD   prc3:>a_ques pos:verb asp:p vox:a mod:i per:2 gen:m num:d
+>a/INTERROG_PART+laso/NEG_PART+tum/PVSUFF_SUBJ:2MP   	prc3:>a_ques pos:verb asp:p vox:a mod:i per:2 gen:m num:p
+>a/INTERROG_PART+laso/NEG_PART+tun~a/PVSUFF_SUBJ:2FP  prc3:>a_ques pos:verb asp:p vox:a mod:i per:2 gen:f num:p
+>a/INTERROG_PART+laso/NEG_PART+na/PVSUFF_SUBJ:3FP   	prc3:>a_ques pos:verb asp:p vox:a mod:i per:3 gen:f num:p
+>a/INTERROG_PART+layos/NEG_PART+a/PVSUFF_SUBJ:3MS  	prc3:>a_ques pos:verb asp:p vox:a mod:i per:3 gen:m num:s
+>a/INTERROG_PART+layos/NEG_PART+at/PVSUFF_SUBJ:3FS   	prc3:>a_ques pos:verb asp:p vox:a mod:i per:3 gen:f num:s
+>a/INTERROG_PART+layos/NEG_PART+A/PVSUFF_SUBJ:3MD   	prc3:>a_ques pos:verb asp:p vox:a mod:i per:3 gen:m num:d
+>a/INTERROG_PART+layos/NEG_PART+atA/PVSUFF_SUBJ:3FD   prc3:>a_ques pos:verb asp:p vox:a mod:i per:3 gen:f num:d
+>a/INTERROG_PART+layos/NEG_PART+uwA/PVSUFF_SUBJ:3MP   prc3:>a_ques pos:verb asp:p vox:a mod:i per:3 gen:m num:p
+
+
+laso/NEG_PART+tu/PVSUFF_SUBJ:1S   	 pos:verb asp:p vox:a mod:i per:1 num:s
+laso/NEG_PART+nA/PVSUFF_SUBJ:1P	 pos:verb asp:p vox:a mod:i per:1 num:p
+laso/NEG_PART+ta/PVSUFF_SUBJ:2MS   	 pos:verb asp:p vox:a mod:i per:2 gen:m num:s
+laso/NEG_PART+ti/PVSUFF_SUBJ:2FS   	 pos:verb asp:p vox:a mod:i per:2 gen:f num:s
+laso/NEG_PART+tumA/PVSUFF_SUBJ:2FD    pos:verb asp:p vox:a mod:i per:2 gen:f num:d
+laso/NEG_PART+tumA/PVSUFF_SUBJ:2MD    pos:verb asp:p vox:a mod:i per:2 gen:m num:d
+laso/NEG_PART+tum/PVSUFF_SUBJ:2MP   	 pos:verb asp:p vox:a mod:i per:2 gen:m num:p
+laso/NEG_PART+tun~a/PVSUFF_SUBJ:2FP   pos:verb asp:p vox:a mod:i per:2 gen:f num:p
+laso/NEG_PART+na/PVSUFF_SUBJ:3FP   	 pos:verb asp:p vox:a mod:i per:3 gen:f num:p
+layos/NEG_PART+a/PVSUFF_SUBJ:3MS  	 pos:verb asp:p vox:a mod:i per:3 gen:m num:s
+layos/NEG_PART+at/PVSUFF_SUBJ:3FS   	 pos:verb asp:p vox:a mod:i per:3 gen:f num:s
+layos/NEG_PART+A/PVSUFF_SUBJ:3MD   	 pos:verb asp:p vox:a mod:i per:3 gen:m num:d
+layos/NEG_PART+atA/PVSUFF_SUBJ:3FD    pos:verb asp:p vox:a mod:i per:3 gen:f num:d
+layos/NEG_PART+uwA/PVSUFF_SUBJ:3MP    pos:verb asp:p vox:a mod:i per:3 gen:m num:p
+
+
+
+
+
+;ARAMORPH-1.2
+>ay~/INTERROG_PART+hA/PRON_3FS			      pos:pron_interrog enc0:3fs_poss
+>ay~/INTERROG_PART+hum/PRON_3MP			      pos:pron_interrog enc0:3mp_poss
+>ay~/INTERROG_PART+humA/PRON_3D			      pos:pron_interrog enc0:3d_poss
+>ay~/INTERROG_PART+hun~a/PRON_3FP		      pos:pron_interrog enc0:3fp_poss
+>ay~/INTERROG_PART+kum/PRON_2MP			      pos:pron_interrog enc0:2mp_poss
+>ay~/INTERROG_PART+kumA/PRON_2D			      pos:pron_interrog enc0:2d_poss
+>ay~/INTERROG_PART+kun~a/PRON_2FP		      pos:pron_interrog enc0:3fp_poss
+>ay~/INTERROG_PART+nA/PRON_1P			      pos:pron_interrog enc0:1p_poss
+>ay~ap/INTERROG_PART+hA/PRON_3FS		      pos:pron_interrog enc0:3fs_poss
+>ay~ap/INTERROG_PART+humA/PRON_3D		      pos:pron_interrog enc0:3d_poss
+>ay~ap/INTERROG_PART+hun~a/PRON_3FP		      pos:pron_interrog enc0:3fp_poss
+>ay~ap/INTERROG_PART+kumA/PRON_2D		      pos:pron_interrog enc0:2d_poss
+>ay~ap/INTERROG_PART+kun~a/PRON_2FP		      pos:pron_interrog enc0:2fp_poss
+>ay~ap/INTERROG_PART+nA/PRON_1P			      pos:pron_interrog enc0:1p_poss
+
+
+>a/INTERROG_PART+wa/PART+layos/NEG_PART+a/PVSUFF_SUBJ:3MS    prc3:>a_ques prc2:wa_part pos:verb asp:p vox:a mod:i per:3 gen:m num:s
+
+
+>a/INTERROG_PART+kAn/VERB_PERFECT+a/PVSUFF_SUBJ:3MS 	     pos:verb prc3:>a_ques asp:p vox:a mod:i gen:m num:s per:3
+>a/INTERROG_PART+mA/NEG_PART				     pos:part_neg  prc3:>a_ques 
+bi/PREP+>an/SUB_CONJ					     prc1:bi_prep pos:conj_sub
+
+bi/PREP+ma/INTERROG_PART 				     prc1:bi_prep pos:part_interrog 
+bi/PREP+mA/INTERROG_PART				     prc1:bi_prep pos:part_interrog 
+bi/PREP+mA/REL_PRON					     prc1:bi_prep pos:pron_rel
+
+fiy/PREP+ma/INTERROG_PART 				     pos:part_interrog prc1:fiy_prep
+fiy/PREP+mA/REL_PRON					     pos:pron_rel prc1:fiy_prep
+
+ka>an~a/CONJ					     prc1:ka_prep pos:conj_sub
+ka>an~amA/CONJ			     		     prc1:ka_prep pos:conj_sub enc0:mA_rel
+ka>an~/CONJ					     prc1:ka_prep pos:conj_sub
+
+
+lA/NEG_PART+bud~a/NOUN 					     pos:noun prc0:lA_neg 
+lawo/SUB_CONJ+lA/NEG_PART				     lex:lawolA_1 pos:conj_sub
+li/PREP+>an/SUB_CONJ 			     		     prc1:li_prep pos:conj_sub
+
+mA/INTERROG_PART+EasA/ADV 				     pos:verb_pseudo prc0:mA_part 
+mA/INTERROG_PART+EasaY/ADV 				     pos:verb_pseudo prc0:mA_part 
+
+mA/INTERROG_PART+EasA/FUNC_WORD				     pos:verb_pseudo prc0:mA_part 
+mA/INTERROG_PART+EasaY/FUNC_WORD			     pos:verb_pseudo prc0:mA_part 
+
+
+mA/NEG_PART+zAl/VERB_PERFECT 				     pos:verb prc0:mA_neg asp:p vox:a mod:i
+mA/NEG_PART+zil/VERB_PERFECT				     pos:verb prc0:mA_neg asp:p vox:a mod:i
+
+mA/NEG_PART+zAl/VERB_PERFECT+A/PVSUFF_SUBJ:3MD		     pos:verb prc0:mA_neg asp:p vox:a mod:i per:3 gen:m num:d
+mA/NEG_PART+zAl/VERB_PERFECT+a/PVSUFF_SUBJ:3MS		     pos:verb prc0:mA_neg asp:p vox:a mod:i per:3 gen:m num:s
+mA/NEG_PART+zAl/VERB_PERFECT+at/PVSUFF_SUBJ:3FS		     pos:verb prc0:mA_neg asp:p vox:a mod:i per:3 gen:f num:s
+
+mA/NEG_PART+zAl/VERB_PERFECT+atA/PVSUFF_SUBJ:3FD	     pos:verb prc0:mA_neg asp:p vox:a mod:i per:3 gen:f num:d
+mA/NEG_PART+zAl/VERB_PERFECT+uwA/PVSUFF_SUBJ:3MP	     pos:verb prc0:mA_neg asp:p vox:a mod:i per:3 gen:m num:p
+mA/NEG_PART+zil/VERB_PERFECT+nA/PVSUFF_SUBJ:1P		     pos:verb prc0:mA_neg asp:p vox:a mod:i per:1 num:p
+
+mA/NEG_PART+zil/VERB_PERFECT+na/PVSUFF_SUBJ:3FP		     pos:verb prc0:mA_neg asp:p vox:a mod:i per:3 gen:f num:p
+mA/NEG_PART+zil/VERB_PERFECT+ta/PVSUFF_SUBJ:2MS		     pos:verb prc0:mA_neg asp:p vox:a mod:i per:2 gen:m num:s
+mA/NEG_PART+zil/VERB_PERFECT+ti/PVSUFF_SUBJ:2FS		     pos:verb prc0:mA_neg asp:p vox:a mod:i per:2 gen:f num:s	
+
+mA/NEG_PART+zil/VERB_PERFECT+tu/PVSUFF_SUBJ:1S		     pos:verb prc0:mA_neg asp:p vox:a mod:i per:1 num:s
+mA/NEG_PART+zil/VERB_PERFECT+tum/PVSUFF_SUBJ:2MP	     pos:verb prc0:mA_neg asp:p vox:a mod:i per:2 gen:m num:p
+
+mA/NEG_PART+zil/VERB_PERFECT+tumA/PVSUFF_SUBJ:2MD	     pos:verb prc0:mA_neg asp:p vox:a mod:i per:2 gen:m num:d
+mA/NEG_PART+zil/VERB_PERFECT+tun~a/PVSUFF_SUBJ:2FP	     pos:verb prc0:mA_neg asp:p vox:a mod:i per:2 gen:f num:p
+
+lA/NEG_PART+>a/IV1S+zAl/VERB_IMPERFECT			     	      pos:verb prc0:lA_neg asp:i vox:a mod:i per:1 num:s			     
+lA/NEG_PART+na/IV1P+zAl/VERB_IMPERFECT				      pos:verb prc0:lA_neg asp:i vox:a mod:i per:1 num:p			  
+lA/NEG_PART+ta/IV2D+zAl/VERB_IMPERFECT+Ani/IVSUFF_SUBJ:D_MOOD:I	      pos:verb prc0:lA_neg asp:i vox:a mod:i per:2 num:d
+lA/NEG_PART+ta/IV2FP+zal/VERB_IMPERFECT+na/IVSUFF_SUBJ:FP	      pos:verb prc0:lA_neg asp:i vox:a mod:i per:2 gen:f num:p
+lA/NEG_PART+ta/IV2FS+zAl/VERB_IMPERFECT+iyna/IVSUFF_SUBJ:2FS_MOOD:I   pos:verb prc0:lA_neg asp:i vox:a mod:i per:2 gen:f num:s
+lA/NEG_PART+ta/IV2MP+zAl/VERB_IMPERFECT+uwna/IVSUFF_SUBJ:MP_MOOD:I    pos:verb prc0:lA_neg asp:i vox:a mod:i per:2 gen:m num:p
+lA/NEG_PART+ta/IV2MS+zAl/VERB_IMPERFECT				      pos:verb prc0:lA_neg asp:i vox:a mod:i per:2 gen:m num:s
+lA/NEG_PART+ta/IV3FD+zAl/VERB_IMPERFECT+Ani/IVSUFF_SUBJ:D_MOOD:I      pos:verb prc0:lA_neg asp:i vox:a mod:i per:3 gen:f num:d
+lA/NEG_PART+ta/IV3FS+zAl/VERB_IMPERFECT				      pos:verb prc0:lA_neg asp:i vox:a mod:i per:3 gen:f num:s
+lA/NEG_PART+ya/IV3FP+zal/VERB_IMPERFECT+na/IVSUFF_SUBJ:FP	      pos:verb prc0:lA_neg asp:i vox:a mod:i per:3 gen:f num:p
+lA/NEG_PART+ya/IV3MD+zAl/VERB_IMPERFECT+Ani/IVSUFF_SUBJ:D_MOOD:I      pos:verb prc0:lA_neg asp:i vox:a mod:i per:3 gen:m num:d
+lA/NEG_PART+ya/IV3MP+zAl/VERB_IMPERFECT+uwna/IVSUFF_SUBJ:MP_MOOD:I    pos:verb prc0:lA_neg asp:i vox:a mod:i per:3 gen:m num:p
+lA/NEG_PART+ya/IV3MS+zAl/VERB_IMPERFECT				      pos:verb prc0:lA_neg asp:i vox:a mod:i per:3 gen:m num:s
+
+mA/NEG_PART+>a/IV1S+zAl/VERB_IMPERFECT			     	      pos:verb prc0:mA_neg asp:i vox:a mod:i per:1 num:s			     
+mA/NEG_PART+na/IV1P+zAl/VERB_IMPERFECT				      pos:verb prc0:mA_neg asp:i vox:a mod:i per:1 num:p			  
+mA/NEG_PART+ta/IV2D+zAl/VERB_IMPERFECT+Ani/IVSUFF_SUBJ:D_MOOD:I	      pos:verb prc0:mA_neg asp:i vox:a mod:i per:2 num:d
+mA/NEG_PART+ta/IV2FP+zal/VERB_IMPERFECT+na/IVSUFF_SUBJ:FP	      pos:verb prc0:mA_neg asp:i vox:a mod:i per:2 gen:f num:p
+mA/NEG_PART+ta/IV2FS+zAl/VERB_IMPERFECT+iyna/IVSUFF_SUBJ:2FS_MOOD:I   pos:verb prc0:mA_neg asp:i vox:a mod:i per:2 gen:f num:s
+mA/NEG_PART+ta/IV2MP+zAl/VERB_IMPERFECT+uwna/IVSUFF_SUBJ:MP_MOOD:I    pos:verb prc0:mA_neg asp:i vox:a mod:i per:2 gen:m num:p
+mA/NEG_PART+ta/IV2MS+zAl/VERB_IMPERFECT				      pos:verb prc0:mA_neg asp:i vox:a mod:i per:2 gen:m num:s
+mA/NEG_PART+ta/IV3FD+zAl/VERB_IMPERFECT+Ani/IVSUFF_SUBJ:D_MOOD:I      pos:verb prc0:mA_neg asp:i vox:a mod:i per:3 gen:f num:d
+mA/NEG_PART+ta/IV3FS+zAl/VERB_IMPERFECT				      pos:verb prc0:mA_neg asp:i vox:a mod:i per:3 gen:f num:s
+mA/NEG_PART+ya/IV3FP+zal/VERB_IMPERFECT+na/IVSUFF_SUBJ:FP	      pos:verb prc0:mA_neg asp:i vox:a mod:i per:3 gen:f num:p
+mA/NEG_PART+ya/IV3MD+zAl/VERB_IMPERFECT+Ani/IVSUFF_SUBJ:D_MOOD:I      pos:verb prc0:mA_neg asp:i vox:a mod:i per:3 gen:m num:d
+mA/NEG_PART+ya/IV3MP+zAl/VERB_IMPERFECT+uwna/IVSUFF_SUBJ:MP_MOOD:I    pos:verb prc0:mA_neg asp:i vox:a mod:i per:3 gen:m num:p
+mA/NEG_PART+ya/IV3MS+zAl/VERB_IMPERFECT				      pos:verb prc0:mA_neg asp:i vox:a mod:i per:3 gen:m num:s
+
+
+
+mA/REL_PRON+baEoda/PREP				pos:noun prc0:mA_rel gen:m num:s
+mA/REL_PRON+baEod/NOUN				pos:noun prc0:mA_rel gen:m num:s
+
+yA/INTERJ+>ay~atuhA/PART			prc1:yA_voc pos:part_voc
+yA/INTERJ+>ay~uhA/PART 				prc1:yA_voc pos:part_voc
+yA/INTERJ+>ay~atuhA/FUNC_WORD			prc1:yA_voc pos:part_voc
+yA/INTERJ+>ay~uhA/FUNC_WORD			prc1:yA_voc pos:part_voc
+
+yA/INTERJ+duwb/NOUN 				prc1:yA_voc pos:noun
+yA/INTERJ+layota/PART				prc1:yA_voc pos:verb_pseudo
+yA/INTERJ+turaY/ADV				prc1:yA_voc pos:interj
+
+bi/PREP+Al/DET+ta>okiyd/NOUN+i/CASE_DEF_GEN	prc1:bi_prep pos:noun stt:d cas:g gen:m prc0:Al_det
+bi/PREP+Al/DET+fiEol/ADV 			prc1:bi_prep pos:noun stt:d cas:g gen:m prc0:Al_det
+
+bi/PREP+sabab/NOUN lex:sabab_1			pos:IGNORE
+bi/PREP+sababi/NOUN lex:sabab_1			pos:IGNORE
+bi/PREP+somi/NOUN lex:bisomi_1			prc1:bi_prep pos:noun  gen:m
+
+
+>uwlA'i/DEM_PRON_MP				pos:pron_dem gen:m num:p
+>uwla}ika/DEM_PRON_MP				pos:pron_dem gen:m num:p
+>uwluw/DEM_PRON_MP				pos:pron_dem gen:m num:p
+>uluw/DEM_PRON_MP				pos:pron_dem gen:m num:p
+Al|n/ADV+a/CASE_DEF_ACC				pos:adv cas:a stt:d gen:m num:s
+li/PREP+taw~/NOUN+i/CASE_DEF_GEN		pos:noun cas:g prc1:li_prep gen:m num:s 
+
+{ivon/NOUN+Ani/NSUFF_MASC_DU_NOM		pos:noun gen:m num:d cas:n
+{ivon/NOUN+ayoni/NSUFF_MASC_DU_ACC		pos:noun gen:m num:d cas:a
+{ivon/NOUN+ayoni/NSUFF_MASC_DU_GEN		pos:noun gen:m num:d cas:g
+{ivon/NOUN+ayoni/NSUFF_MASC_DU_ACCGEN		pos:noun gen:m num:d cas:a
+{ivon/NOUN+ayoni/NSUFF_MASC_DU_ACCGEN		pos:noun gen:m num:d cas:g
+
+{ivon/ADJ+Ani/NSUFF_MASC_DU_NOM			pos:adj gen:m num:d cas:n
+{ivon/ADJ+ayoni/NSUFF_MASC_DU_ACC		pos:adj gen:m num:d cas:a
+{ivon/ADJ+ayoni/NSUFF_MASC_DU_GEN		pos:adj gen:m num:d cas:g
+{ivon/ADJ+ayoni/NSUFF_MASC_DU_ACCGEN		pos:adj gen:m num:d cas:a
+{ivon/ADJ+ayoni/NSUFF_MASC_DU_ACCGEN		pos:adj gen:m num:d cas:g
+
+{ivon/NUM+Ani/NSUFF_MASC_DU_NOM			pos:noun_num gen:m num:d cas:n
+{ivon/NUM+ayoni/NSUFF_MASC_DU_ACC		pos:noun_num gen:m num:d cas:a
+{ivon/NUM+ayoni/NSUFF_MASC_DU_GEN		pos:noun_num gen:m num:d cas:g
+{ivon/NUM+ayoni/NSUFF_MASC_DU_ACCGEN		pos:noun_num gen:m num:d cas:a
+{ivon/NUM+ayoni/NSUFF_MASC_DU_ACCGEN		pos:noun_num gen:m num:d cas:g
+
+Al/DET+{ivon/NOUN+Ani/NSUFF_MASC_DU_NOM		pos:noun gen:m num:d cas:n prc0:Al_det
+Al/DET+{ivon/NOUN+ayoni/NSUFF_MASC_DU_ACC	pos:noun gen:m num:d cas:a prc0:Al_det
+Al/DET+{ivon/NOUN+ayoni/NSUFF_MASC_DU_GEN	pos:noun gen:m num:d cas:g prc0:Al_det
+Al/DET+{ivon/NOUN+ayoni/NSUFF_MASC_DU_ACCGEN	pos:noun gen:m num:d cas:a prc0:Al_det
+Al/DET+{ivon/NOUN+ayoni/NSUFF_MASC_DU_ACCGEN	pos:noun gen:m num:d cas:g prc0:Al_det
+
+Al/DET+{ivon/ADJ+Ani/NSUFF_MASC_DU_NOM		pos:adj gen:m num:d cas:n prc0:Al_det
+Al/DET+{ivon/ADJ+ayoni/NSUFF_MASC_DU_ACC	pos:adj gen:m num:d cas:a prc0:Al_det
+Al/DET+{ivon/ADJ+ayoni/NSUFF_MASC_DU_GEN	pos:adj gen:m num:d cas:g prc0:Al_det
+Al/DET+{ivon/ADJ+ayoni/NSUFF_MASC_DU_ACCGEN	pos:adj gen:m num:d cas:a prc0:Al_det
+Al/DET+{ivon/ADJ+ayoni/NSUFF_MASC_DU_ACCGEN	pos:adj gen:m num:d cas:g prc0:Al_det
+
+Al/DET+{ivon/NUM+Ani/NSUFF_MASC_DU_NOM		pos:noun_num gen:m num:d cas:n prc0:Al_det
+Al/DET+{ivon/NUM+ayoni/NSUFF_MASC_DU_ACC	pos:noun_num gen:m num:d cas:a prc0:Al_det
+Al/DET+{ivon/NUM+ayoni/NSUFF_MASC_DU_GEN	pos:noun_num gen:m num:d cas:g prc0:Al_det
+Al/DET+{ivon/NUM+ayoni/NSUFF_MASC_DU_ACCGEN	pos:noun_num gen:m num:d cas:a prc0:Al_det
+Al/DET+{ivon/NUM+ayoni/NSUFF_MASC_DU_ACCGEN	pos:noun_num gen:m num:d cas:g prc0:Al_det
+
+
+li/PREP+Al/DET+{ivon/NOUN+ayoni/NSUFF_MASC_DU_GEN	pos:noun gen:m num:d cas:g prc0:Al_det prc1:li_prep
+li/PREP+Al/DET+{ivon/NUM+ayoni/NSUFF_MASC_DU_GEN	pos:noun_num gen:m num:d cas:g prc0:Al_det prc1:li_prep
+li/PREP+Al/DET+{ivon/ADJ+ayoni/NSUFF_MASC_DU_ACCGEN	pos:adj gen:m num:d cas:g prc0:Al_det prc1:li_prep
+
+bi/PREP+Al/DET+{ivon/NOUN+ayoni/NSUFF_MASC_DU_GEN	pos:noun gen:m num:d cas:g prc0:Al_det prc1:bi_prep
+bi/PREP+Al/DET+{ivon/NUM+ayoni/NSUFF_MASC_DU_GEN	pos:noun_num gen:m num:d cas:g prc0:Al_det prc1:bi_prep
+bi/PREP+Al/DET+{ivon/ADJ+ayoni/NSUFF_MASC_DU_ACCGEN	pos:adj gen:m num:d cas:g prc0:Al_det prc1:bi_prep
+
+ka/PREP+Al/DET+{ivon/NOUN+ayoni/NSUFF_MASC_DU_GEN	pos:noun gen:m num:d cas:g prc0:Al_det prc1:ka_prep
+ka/PREP+Al/DET+{ivon/NUM+ayoni/NSUFF_MASC_DU_GEN	pos:noun_num gen:m num:d cas:g prc0:Al_det prc1:ka_prep
+ka/PREP+Al/DET+{ivon/ADJ+ayoni/NSUFF_MASC_DU_ACCGEN	pos:adj gen:m num:d cas:g prc0:Al_det prc1:ka_prep
+
+{ivon/NOUN+A/NSUFF_MASC_DU_NOM_POSS			pos:noun gen:m num:d cas:n stt:c
+{ivon/NOUN+ayo/NSUFF_MASC_DU_ACC_POSS			pos:noun gen:m num:d cas:a stt:c
+{ivon/NOUN+ayo/NSUFF_MASC_DU_GEN_POSS			pos:noun gen:m num:d cas:g stt:c
+{ivon/NUM+A/NSUFF_MASC_DU_NOM_POSS			pos:noun_num gen:m num:d cas:n stt:c
+{ivon/NUM+ayo/NSUFF_MASC_DU_ACC_POSS			pos:noun_num gen:m num:d cas:a stt:c
+{ivon/NUM+ayo/NSUFF_MASC_DU_GEN_POSS			pos:noun_num gen:m num:d cas:g stt:c
+Al/DET+{ivon/NOUN+A/NSUFF_MASC_DU_NOM_POSS		pos:noun gen:m num:d cas:n stt:c prc0:Al_det
+Al/DET+{ivon/NOUN+ayo/NSUFF_MASC_DU_ACC_POSS		pos:noun gen:m num:d cas:a stt:c prc0:Al_det
+Al/DET+{ivon/NOUN+ayo/NSUFF_MASC_DU_GEN_POSS		pos:noun gen:m num:d cas:g stt:c prc0:Al_det
+Al/DET+{ivon/ADJ+A/NSUFF_MASC_DU_NOM_POSS		pos:adj gen:m num:d cas:n stt:c prc0:Al_det
+Al/DET+{ivon/ADJ+ayo/NSUFF_MASC_DU_ACC_POSS		pos:adj gen:m num:d cas:a stt:c prc0:Al_det
+Al/DET+{ivon/ADJ+ayo/NSUFF_MASC_DU_GEN_POSS		pos:adj gen:m num:d cas:g stt:c prc0:Al_det
+Al/DET+{ivon/ADJ+ayo/NSUFF_MASC_DU_ACCGEN_POSS		pos:adj gen:m num:d cas:a stt:c prc0:Al_det
+Al/DET+{ivon/ADJ+ayo/NSUFF_MASC_DU_ACCGEN_POSS		pos:adj gen:m num:d cas:g stt:c prc0:Al_det
+
+Al/DET+{ivon/NUM+A/NSUFF_MASC_DU_NOM_POSS		pos:noun_num gen:m num:d cas:n stt:c prc0:Al_det
+Al/DET+{ivon/NUM+ayo/NSUFF_MASC_DU_ACC_POSS		pos:noun_num gen:m num:d cas:a stt:c prc0:Al_det
+Al/DET+{ivon/NUM+ayo/NSUFF_MASC_DU_GEN_POSS		pos:noun_num gen:m num:d cas:g stt:c prc0:Al_det
+
+li/PREP+Al/DET+{ivon/NOUN+ayo/NSUFF_MASC_DU_GEN_POSS	pos:noun gen:m num:d cas:g stt:c prc0:Al_det prc1:li_prep
+li/PREP+Al/DET+{ivon/ADJ+ayo/NSUFF_MASC_DU_GEN_POSS	pos:adj gen:m num:d cas:g stt:c prc0:Al_det prc1:li_prep
+li/PREP+Al/DET+{ivon/NUM+ayo/NSUFF_MASC_DU_GEN_POSS	pos:noun_num gen:m num:d cas:g stt:c prc0:Al_det prc1:li_prep
+li/PREP+Al/DET+{ivon/ADJ+ayo/NSUFF_MASC_DU_ACCGEN_POSS	pos:adj gen:m num:d cas:a stt:c prc0:Al_det prc1:li_prep
+li/PREP+Al/DET+{ivon/ADJ+ayo/NSUFF_MASC_DU_ACCGEN_POSS	pos:adj gen:m num:d cas:g stt:c prc0:Al_det prc1:li_prep
+
+bi/PREP+Al/DET+{ivon/NOUN+ayo/NSUFF_MASC_DU_GEN_POSS	pos:noun gen:m num:d cas:g stt:c prc0:Al_det prc1:bi_prep
+bi/PREP+Al/DET+{ivon/ADJ+ayo/NSUFF_MASC_DU_GEN_POSS	pos:adj gen:m num:d cas:g stt:c prc0:Al_det prc1:bi_prep
+bi/PREP+Al/DET+{ivon/NUM+ayo/NSUFF_MASC_DU_GEN_POSS	pos:noun_num gen:m num:d cas:g stt:c prc0:Al_det prc1:bi_prep
+bi/PREP+Al/DET+{ivon/ADJ+ayo/NSUFF_MASC_DU_ACCGEN_POSS	pos:adj gen:m num:d cas:a stt:c prc0:Al_det prc1:bi_prep
+bi/PREP+Al/DET+{ivon/ADJ+ayo/NSUFF_MASC_DU_ACCGEN_POSS	pos:adj gen:m num:d cas:g stt:c prc0:Al_det prc1:bi_prep
+
+
+ka/PREP+Al/DET+{ivon/NOUN+ayo/NSUFF_MASC_DU_GEN_POSS	pos:noun gen:m num:d cas:g stt:c prc0:Al_det prc1:ka_prep
+ka/PREP+Al/DET+{ivon/ADJ+ayo/NSUFF_MASC_DU_GEN_POSS	pos:adj gen:m num:d cas:g stt:c prc0:Al_det prc1:ka_prep
+ka/PREP+Al/DET+{ivon/NUM+ayo/NSUFF_MASC_DU_GEN_POSS	pos:noun_num gen:m num:d cas:g stt:c prc0:Al_det prc1:ka_prep
+ka/PREP+Al/DET+{ivon/ADJ+ayo/NSUFF_MASC_DU_ACCGEN_POSS	pos:adj gen:m num:d cas:a stt:c prc0:Al_det prc1:ka_prep
+ka/PREP+Al/DET+{ivon/ADJ+ayo/NSUFF_MASC_DU_ACCGEN_POSS	pos:adj gen:m num:d cas:g stt:c prc0:Al_det prc1:ka_prep
+
+
+{ivon/NOUN+atAni/NSUFF_FEM_DU_NOM		pos:noun gen:f num:d cas:n
+{ivon/NOUN+atayoni/NSUFF_FEM_DU_ACC		pos:noun gen:f num:d cas:a
+{ivon/NOUN+atayoni/NSUFF_FEM_DU_GEN		pos:noun gen:f num:d cas:g
+{ivon/ADJ+atAni/NSUFF_FEM_DU_NOM			pos:adj gen:f num:d cas:n
+{ivon/ADJ+atayoni/NSUFF_FEM_DU_ACC		pos:adj gen:f num:d cas:a
+{ivon/ADJ+atayoni/NSUFF_FEM_DU_GEN		pos:adj gen:f num:d cas:g
+{ivon/ADJ+atayoni/NSUFF_FEM_DU_ACCGEN		pos:adj gen:f num:d cas:a
+{ivon/ADJ+atayoni/NSUFF_FEM_DU_ACCGEN		pos:adj gen:f num:d cas:g
+{ivon/NUM+atAni/NSUFF_FEM_DU_NOM			pos:noun_num gen:f num:d cas:n
+{ivon/NUM+atayoni/NSUFF_FEM_DU_ACC		pos:noun_num gen:f num:d cas:a
+{ivon/NUM+atayoni/NSUFF_FEM_DU_GEN		pos:noun_num gen:f num:d cas:g
+
+Al/DET+{ivon/NOUN+atAni/NSUFF_FEM_DU_NOM		pos:noun gen:f num:d cas:n prc0:Al_det
+Al/DET+{ivon/NOUN+atayoni/NSUFF_FEM_DU_ACC	pos:noun gen:f num:d cas:a prc0:Al_det
+Al/DET+{ivon/NOUN+atayoni/NSUFF_FEM_DU_GEN	pos:noun gen:f num:d cas:g prc0:Al_det
+Al/DET+{ivon/ADJ+atAni/NSUFF_FEM_DU_NOM		pos:adj gen:f num:d cas:n prc0:Al_det
+Al/DET+{ivon/ADJ+atayoni/NSUFF_FEM_DU_ACC	pos:adj gen:f num:d cas:a prc0:Al_det
+Al/DET+{ivon/ADJ+atayoni/NSUFF_FEM_DU_GEN	pos:adj gen:f num:d cas:g prc0:Al_det
+Al/DET+{ivon/ADJ+atayoni/NSUFF_FEM_DU_ACCGEN	pos:adj gen:f num:d cas:a prc0:Al_det
+Al/DET+{ivon/ADJ+atayoni/NSUFF_FEM_DU_ACCGEN	pos:adj gen:f num:d cas:g prc0:Al_det
+Al/DET+{ivon/NUM+atAni/NSUFF_FEM_DU_NOM		pos:noun_num gen:f num:d cas:n prc0:Al_det
+Al/DET+{ivon/NUM+atayoni/NSUFF_FEM_DU_ACC	pos:noun_num gen:f num:d cas:a prc0:Al_det
+Al/DET+{ivon/NUM+atayoni/NSUFF_FEM_DU_GEN	pos:noun_num gen:f num:d cas:g prc0:Al_det
+
+
+li/PREP+Al/DET+{ivon/NOUN+atayoni/NSUFF_FEM_DU_GEN	pos:noun gen:f num:d cas:g prc0:Al_det prc1:li_prep
+li/PREP+Al/DET+{ivon/NUM+atayoni/NSUFF_FEM_DU_GEN	pos:noun_num gen:f num:d cas:g prc0:Al_det prc1:li_prep
+li/PREP+Al/DET+{ivon/ADJ+atayoni/NSUFF_FEM_DU_ACCGEN	pos:adj gen:f num:d cas:g prc0:Al_det prc1:li_prep
+bi/PREP+Al/DET+{ivon/NOUN+atayoni/NSUFF_FEM_DU_GEN	pos:noun gen:f num:d cas:g prc0:Al_det prc1:bi_prep
+bi/PREP+Al/DET+{ivon/NUM+atayoni/NSUFF_FEM_DU_GEN	pos:noun_num gen:f num:d cas:g prc0:Al_det prc1:bi_prep
+bi/PREP+Al/DET+{ivon/ADJ+atayoni/NSUFF_FEM_DU_ACCGEN	pos:adj gen:f num:d cas:g prc0:Al_det prc1:bi_prep
+ka/PREP+Al/DET+{ivon/NOUN+atayoni/NSUFF_FEM_DU_GEN	pos:noun gen:f num:d cas:g prc0:Al_det prc1:ka_prep
+ka/PREP+Al/DET+{ivon/NUM+atayoni/NSUFF_FEM_DU_GEN	pos:noun_num gen:f num:d cas:g prc0:Al_det prc1:ka_prep
+ka/PREP+Al/DET+{ivon/ADJ+atayoni/NSUFF_FEM_DU_ACCGEN	pos:adj gen:f num:d cas:g prc0:Al_det prc1:ka_prep
+
+{ivon/NOUN+atA/NSUFF_FEM_DU_NOM_POSS			pos:noun gen:f num:d cas:n stt:c
+{ivon/NOUN+atayo/NSUFF_FEM_DU_ACC_POSS			pos:noun gen:f num:d cas:a stt:c
+{ivon/NOUN+atayo/NSUFF_FEM_DU_GEN_POSS			pos:noun gen:f num:d cas:g stt:c
+{ivon/ADJ+atayo/NSUFF_FEM_DU_ACCGEN_POSS		pos:noun gen:f num:d cas:a stt:c
+{ivon/ADJ+atayo/NSUFF_FEM_DU_ACCGEN_POSS		pos:noun gen:f num:d cas:g stt:c
+{ivon/NUM+atA/NSUFF_FEM_DU_NOM_POSS			pos:noun_num gen:f num:d cas:n stt:c
+{ivon/NUM+atayo/NSUFF_FEM_DU_ACC_POSS			pos:noun_num gen:f num:d cas:a stt:c
+{ivon/NUM+atayo/NSUFF_FEM_DU_GEN_POSS			pos:noun_num gen:f num:d cas:g stt:c
+
+Al/DET+{ivon/NOUN+atA/NSUFF_FEM_DU_NOM_POSS		pos:noun gen:f num:d cas:n stt:c prc0:Al_det
+Al/DET+{ivon/NOUN+atayo/NSUFF_FEM_DU_ACC_POSS		pos:noun gen:f num:d cas:a stt:c prc0:Al_det
+Al/DET+{ivon/NOUN+atayo/NSUFF_FEM_DU_GEN_POSS		pos:noun gen:f num:d cas:g stt:c prc0:Al_det
+Al/DET+{ivon/ADJ+atA/NSUFF_FEM_DU_NOM_POSS		pos:adj gen:f num:d cas:n stt:c prc0:Al_det
+Al/DET+{ivon/ADJ+atayo/NSUFF_FEM_DU_ACC_POSS		pos:adj gen:f num:d cas:a stt:c prc0:Al_det
+Al/DET+{ivon/ADJ+atayo/NSUFF_FEM_DU_GEN_POSS		pos:adj gen:f num:d cas:g stt:c prc0:Al_det
+Al/DET+{ivon/ADJ+atayo/NSUFF_FEM_DU_ACCGEN_POSS		pos:adj gen:f num:d cas:a stt:c prc0:Al_det
+Al/DET+{ivon/ADJ+atayo/NSUFF_FEM_DU_ACCGEN_POSS		pos:adj gen:f num:d cas:g stt:c prc0:Al_det
+Al/DET+{ivon/NUM+atA/NSUFF_FEM_DU_NOM_POSS		pos:noun_num gen:f num:d cas:n stt:c prc0:Al_det
+Al/DET+{ivon/NUM+atayo/NSUFF_FEM_DU_ACC_POSS		pos:noun_num gen:f num:d cas:a stt:c prc0:Al_det
+Al/DET+{ivon/NUM+atayo/NSUFF_FEM_DU_GEN_POSS		pos:noun_num gen:f num:d cas:g stt:c prc0:Al_det
+
+
+li/PREP+Al/DET+{ivon/NOUN+atayo/NSUFF_FEM_DU_GEN_POSS	pos:noun gen:f num:d cas:g stt:c prc0:Al_det prc1:li_prep
+li/PREP+Al/DET+{ivon/ADJ+atayo/NSUFF_FEM_DU_GEN_POSS	pos:adj gen:f num:d cas:g stt:c prc0:Al_det prc1:li_prep
+li/PREP+Al/DET+{ivon/NUM+atayo/NSUFF_FEM_DU_GEN_POSS	pos:noun_num gen:f num:d cas:g stt:c prc0:Al_det prc1:li_prep
+li/PREP+Al/DET+{ivon/ADJ+atayo/NSUFF_FEM_DU_ACCGEN_POSS	pos:adj gen:f num:d cas:g stt:c prc0:Al_det prc1:li_prep
+
+bi/PREP+Al/DET+{ivon/NOUN+atayo/NSUFF_FEM_DU_GEN_POSS	pos:noun gen:f num:d cas:g stt:c prc0:Al_det prc1:bi_prep
+bi/PREP+Al/DET+{ivon/ADJ+atayo/NSUFF_FEM_DU_GEN_POSS	pos:adj gen:f num:d cas:g stt:c prc0:Al_det prc1:bi_prep
+bi/PREP+Al/DET+{ivon/NUM+atayo/NSUFF_FEM_DU_GEN_POSS	pos:noun_num gen:f num:d cas:g stt:c prc0:Al_det prc1:bi_prep
+bi/PREP+Al/DET+{ivon/ADJ+atayo/NSUFF_FEM_DU_ACCGEN_POSS	pos:adj gen:f num:d cas:g stt:c prc0:Al_det prc1:bi_prep
+
+ka/PREP+Al/DET+{ivon/NOUN+atayo/NSUFF_FEM_DU_GEN_POSS	pos:noun gen:f num:d cas:g stt:c prc0:Al_det prc1:ka_prep
+ka/PREP+Al/DET+{ivon/ADJ+atayo/NSUFF_FEM_DU_GEN_POSS	pos:adj gen:f num:d cas:g stt:c prc0:Al_det prc1:ka_prep
+ka/PREP+Al/DET+{ivon/NUM+atayo/NSUFF_FEM_DU_GEN_POSS	pos:noun_num gen:f num:d cas:g stt:c prc0:Al_det prc1:ka_prep
+ka/PREP+Al/DET+{ivon/ADJ+atayo/NSUFF_FEM_DU_ACCGEN_POSS	pos:adj gen:f num:d cas:g stt:c prc0:Al_det prc1:ka_prep
+
+Al/DET+{ivon/NOUN+A/NSUFF_FEM_DU_NOM_POSS		pos:noun gen:f num:d cas:n stt:c prc0:Al_det
+Al/DET+{ivon/NOUN+ayo/NSUFF_FEM_DU_ACC_POSS		pos:noun gen:f num:d cas:a stt:c prc0:Al_det
+Al/DET+{ivon/NOUN+ayo/NSUFF_FEM_DU_GEN_POSS		pos:noun gen:f num:d cas:g stt:c prc0:Al_det
+Al/DET+{ivon/ADJ+A/NSUFF_FEM_DU_NOM_POSS		pos:adj gen:f num:d cas:n stt:c prc0:Al_det
+Al/DET+{ivon/ADJ+ayo/NSUFF_FEM_DU_ACC_POSS		pos:adj gen:f num:d cas:a stt:c prc0:Al_det
+Al/DET+{ivon/ADJ+ayo/NSUFF_FEM_DU_GEN_POSS		pos:adj gen:f num:d cas:g stt:c prc0:Al_det
+Al/DET+{ivon/NUM+A/NSUFF_FEM_DU_NOM_POSS		pos:noun_num gen:f num:d cas:n stt:c prc0:Al_det
+Al/DET+{ivon/NUM+ayo/NSUFF_FEM_DU_ACC_POSS		pos:noun_num gen:f num:d cas:a stt:c prc0:Al_det
+Al/DET+{ivon/NUM+ayo/NSUFF_FEM_DU_GEN_POSS		pos:noun_num gen:f num:d cas:g stt:c prc0:Al_det
+
+
+li/PREP+mujar~ad/NOUN+i/CASE_DEF_GEN			pos:noun gen:m num:s cas:g prc1:li_prep
+
+bi/PREP+Al/DET+<ijomAE/NOUN+i/CASE_DEF_GEN		pos:noun gen:m num:s cas:g stt:d prc1:bi_prep prc0:Al_det
+
+bi/PREP+Haq~/NOUN+i/CASE_DEF_GEN			pos:noun gen:m num:s cas:g prc1:bi_prep
+
+*uw/DEM_PRON_MS						pos:pron_dem gen:m num:s cas:n stt:c
+*iy/DEM_PRON_MS						pos:pron_dem gen:m num:s cas:g stt:c
+*awA/DEM_PRON_MD					pos:pron_dem gen:m num:d cas:n stt:c
+*away/DEM_PRON_MD					pos:pron_dem gen:m num:d cas:g stt:c
+*awiy/DEM_PRON_MD					pos:pron_dem gen:m num:d cas:g stt:c
+*awuw/DEM_PRON_MP					pos:pron_dem gen:m num:p cas:n stt:c
+*awuw/DEM_PRON_MP					pos:pron_dem gen:m num:p cas:g stt:c
+*awiy/DEM_PRON_MP					pos:pron_dem gen:m num:p cas:g stt:c
+dah/DEM_PRON_MS						pos:pron_dem gen:m num:s 
+tiloka/DEM_PRON_FS					pos:pron_dem gen:f num:s 
+tilokum/DEM_PRON_FS					pos:pron_dem gen:f num:s 
+*awAt/DEM_PRON_FP					pos:pron_dem gen:f num:p 
+h`&ulA'i/DEM_PRON_MP					pos:pron_dem gen:m num:p 
+
+
+
+
+<iy~A/PREP+ka/PRON_2MS					pos:part enc0:2ms_pron 
+<iy~A/PREP+ki/PRON_2FS					pos:part enc0:2fs_pron 
+<iy~A/PREP+kumA/PRON_2D					pos:part enc0:2d_pron 
+<iy~A/PREP+kum/PRON_2MP					pos:part enc0:2mp_pron 
+<iy~A/PREP+kun~a/PRON_2FP				pos:part enc0:2fp_pron 
+
+
+Al/DET+kAd/NOUN						pos:noun prc0:Al_det
+Al/DET+lA/NEG_PART					pos:part_neg prc0:Al_det
+bi/PREP+Al/DET+*~At/NOUN+i/CASE_DEF_GEN			pos:noun prc1:bi_part prc0:Al_det num:s stt:d cas:g
+bi/PREP+Al/DET+kAd/NOUN					pos:noun prc1:bi_part prc0:Al_det
+bi/PREP+Al/DET+qaToE/NOUN+i/CASE_DEF_GEN		pos:noun prc1:bi_part prc0:Al_det num:s stt:d cas:g
+bi/PREP+Al/DET+TaboE/NOUN+i/CASE_DEF_GEN		pos:noun prc1:bi_part prc0:Al_det num:s stt:d cas:g
+bi/PREP+Al/DET+tAliy/NOUN				pos:noun prc1:bi_part prc0:Al_det 
+bi/PREP+All~iy/REL_PRON					pos:pron_rel prc1:bi_prep
+bi/PREP+$a>on/NOUN					pos:noun prc1:bi_part prc0:Al_det
+bi/PREP+$a>on/NOUN+i/CASE_DEF_GEN			pos:noun prc1:bi_part prc0:Al_det num:s stt:d cas:g
+bi/PREP+Haq~/NOUN					pos:noun prc1:bi_part prc0:Al_det
+bi/PREP+>uEojuwbap/NOUN					pos:noun prc1:bi_part prc0:Al_det gen:f
+bi/PREP+waSof/NOUN+i/CASE_DEF_GEN			pos:noun prc1:bi_part prc0:Al_det num:s stt:d cas:g
+
+HAla/SUB_CONJ+mA/REL_PRON				lex:HAlamA_1 pos:conj_sub
+Hat~a/SUB_CONJ+mA/REL_PRON				lex:Hat~amA_1 pos:conj_sub
+Hayovu/SUB_CONJ+mA/REL_PRON				lex:HayovumA_1 pos:adv_rel 
+
+<in~a/INTERJ+mA/REL_PRON				pos:verb_pseudo enc0:mA_rel
+<in~a/SUB_CONJ+mA/REL_PRON				pos:conj_sub enc0:mA_rel
+ka/PREP+mA/REL_PRON					pos:pron_rel prc1:ka_prep
+kul~a/SUB_CONJ+mA/REL_PRON				lex:kul~amA_1 pos:adv_rel 
+
+li/PREP+Al/DET+gAyap/NOUN+i/CASE_DEF_GEN		pos:noun prc1:bi_part prc0:Al_det num:s stt:d cas:g
+
+li/PREP+>an/SUB_CONJ+lA/NEG_PART			lex:>an~a_1 pos:conj_sub prc1:la_prep enc0:lA_neg 
+li/PREP+kayolA/SUB_CONJ					lex:kayo_1 pos:conj_sub enc0:lA_neg
+li/PREP+kay/SUB_CONJ					lex:kayo_1 pos:conj_sub
+li/PREP+taw~/NOUN					pos:noun prc1:li_prep 
+
+mA/REL_PRON+bayona/PREP					prc0:mA_rel pos:noun
+mA/REL_PRON+bayoni/PREP					prc0:mA_rel pos:noun
+rayova/SUB_CONJ+mA/REL_PRON				lex:rayovamA_1 pos:conj_sub 
+TAla/SUB_CONJ+mA/REL_PRON				lex:TAlamA_1 pos:conj_sub
+wa/CONJ+<il~A/SUB_CONJ					lex:<il~A_1 pos:part_restrict prc2:wa_conj
+
+mim~A/SUB_CONJ						lex:min_1 pos:prep enc0:mA_sub
+la/EMPH_PART+min/PREP					pos:prep prc1:la_emph
+ka/PREP+mA/REL_PRON					lex:mA_1 pos:pron_rel prc1:ka_prep
+
+; to avoid confusing bilA
+Al/DET+lA/NEG_PART  					lex:AllA_1 pos:part_neg
+
+
+Eam~A/FUNC_WORD						pos:IGNORE 
+
+
+MAP CAT2POS
+;; if no POS is explicitly defined, use categories
+
+
+
+CV      CV
+CV-a    CV
+CV-i    CV
+CV-u    CV
+CV_C    CV
+CV_V    CV
+CV_V_intr    CV
+CV_aw-ay        CV
+CV_intr CV
+CV_uw-iy        CV
+FW      FUNC_WORD
+FW-Wa   FUNC_WORD
+FW-Wa-A FUNC_WORD
+FW-Wa-a FUNC_WORD
+FW-Wa-i FUNC_WORD
+FW-Wa-n FUNC_WORD
+FW-Wa-n~        FUNC_WORD
+FW-Wa-n~a       FUNC_WORD
+FW-Wa-o FUNC_WORD
+FW-Wa-y FUNC_WORD
+FW-WaBi FUNC_WORD
+IV      IV
+IV-A    IV
+IV-A_no-Pref-A  IV
+IV-a    IV
+IV-aY   IV
+IV-aY_Pass_yu   IV_PASS
+IV-aY_no-Pref-A IV
+IV-a_Pass_yu    IV_PASS
+IV-a_no-Pref-A  IV
+IV-ay   IV
+IV-ay_Pass_yu   IV_PASS
+IV-ay_no-Pref-A IV
+IV-i    IV
+IV-i_no-Pref-A  IV
+IV-i_yu IV
+IV-iy   IV
+IV-iy_no-Pref-A IV
+IV-iy_yu        IV
+IV-n    IV
+IV-n_Pass_yu    IV_PASS
+IV-n_intr       IV
+IV-n_intr_yu    IV
+IV-n_no-Pref-A  IV
+IV-n_no-Pref-A_yu  IV
+IV-n_yu IV
+IV-u    IV
+IV-u_no-Pref-A  IV
+IV-uw   IV
+IV-uw_no-Pref-A IV
+IV-|    IV
+IV_0    IV
+IV_0Pass_yu  IV_PASS
+IV_0_Pass_yu  IV_PASS
+IV_0_Passyu  IV_PASS
+IV_0_no-Pref-A IV
+IV_0hAnn IV
+IV_0hAnn_no-Pref-A IV
+IV_0hAnn_yu IV
+IV_0hwnyn IV
+IV_0hwnyn_no-Pref-A IV
+IV_0hwnyn_yu IV
+IV_Ann IV
+IV_Ann_Pass_yu   IV_PASS
+IV_Ann_no-Pref-A IV
+IV_C    IV
+IV_C_Pass_yu    IV_PASS
+IV_C_intr       IV
+IV_C_intr_yu    IV
+IV_C_yu IV
+IV_Cn   IV
+IV_Cn_Pass_yu   IV_PASS
+IV_Cn_intr      IV
+IV_Cn_intr_yu   IV
+IV_Cn_yu        IV
+IV_Pass		IV_PASS
+IV_Pass_yu      IV_PASS
+IV_V    IV
+IV_V_Pass_yu    IV_PASS
+IV_V_intr       IV
+IV_V_intr_no-Pref-A  IV
+IV_V_intr_yu    IV
+IV_V_no-Pref-A  IV
+IV_V_yu IV
+IV_Vd   IV
+IV_Vd_Pass_yu   IV_PASS
+IV_Vd_intr      IV
+IV_Vd_intr_no-Pref-A    IV
+IV_Vd_intr_yu   IV
+IV_Vd_no-Pref-A IV
+IV_Vd_yu        IV
+IV_aw-ay        IV
+IV_aw-ay_Pass_yu        IV_PASS
+IV_aw-ay_intr   IV
+IV_awn_Pass_yu	IV
+IV_h     IV
+IV_h_no-Pref-A  IV
+IV_hwn IV
+IV_intr IV
+IV_intr_yu      IV
+IV_need-Pref-A_yu       IV
+IV_need-Pref-|  IV
+IV_no-Pref-A    IV
+IV_no-Pref-A_yu    IV
+IV_uw-iy        IV
+IV_uw-iy_yu     IV
+IV_wn   IV
+IV_wn_intr_yu   IV
+IV_wn_yu        IV
+IV_yn   IV
+IV_yn_Pass_yu   IV_PASS
+IV_yn_intr_yu   IV
+IV_yn_yu        IV
+IV_yu  		 IV
+
+PV      PV
+PV->    PV
+PV->_intr       PV
+PV-n    PV
+PV-n_Pass       PV_PASS
+PV-n_intr       PV
+PV-t    PV
+PV-t_intr       PV
+PV-|    PV
+PV-|_intr       PV
+PV_0    PV
+PV_0h   PV
+PV_Atn  PV
+PV_C    PV
+PV_C_Pass       PV_PASS
+PV_C_intr       PV
+PV_Cn   PV
+PV_Cn_intr      PV
+PV_Ct   PV
+PV_Ct_intr      PV
+PV_Pass PV_PASS
+PV_Pass-a       PV_PASS
+PV_Pass-aAat    PV_PASS
+PV_V    PV
+PV_V_Pass       PV_PASS
+PV_V_Pass-a     PV_PASS
+PV_V_intr       PV
+PV_h    PV
+PV_intr PV
+PV_no-w PV
+PV_no-w_Pass    PV_PASS
+PV_no-w_intr    PV
+PV_ttAw PV
+PV_ttAw_intr    PV
+PV_w    PV
+PV_w_Pass       PV_PASS
+PV_w_intr       PV
+
+
+GLOSSCAP++N     NOUN_PROP
+GLOSSCAP++N-|   NOUN_PROP
+GLOSSCAP++N0    NOUN_PROP
+GLOSSCAP++N0F   NOUN_PROP
+GLOSSCAP++N0F_Nh        NOUN_PROP
+GLOSSCAP++N0_L  NOUN_PROP
+GLOSSCAP++N0_Nh NOUN_PROP
+GLOSSCAP++N0_Nhy        NOUN_PROP
+GLOSSCAP++NAF   NOUN_PROP
+GLOSSCAP++NAF_Nhy       NOUN_PROP
+GLOSSCAP++Nah   NOUN_PROP
+GLOSSCAP++Nall  NOUN_PROP
+GLOSSCAP++Nall_L        NOUN_PROP
+GLOSSCAP++NAn_Nayn      NOUN_PROP
+GLOSSCAP++NAn_Nayn_L    NOUN_PROP
+GLOSSCAP++Nap   NOUN_PROP
+GLOSSCAP++N-ap  NOUN_PROP
+GLOSSCAP++N/ap  NOUN_PROP
+GLOSSCAP++NapAt NOUN_PROP
+GLOSSCAP++NapAt_L       NOUN_PROP
+GLOSSCAP++Nap_dip       NOUN_PROP
+GLOSSCAP++Napdu NOUN_PROP
+GLOSSCAP++Napdu_L       NOUN_PROP
+GLOSSCAP++NapF  NOUN_PROP
+GLOSSCAP++N-ap_L        NOUN_PROP
+GLOSSCAP++N/ap_L        NOUN_PROP
+GLOSSCAP++Nap_L NOUN_PROP
+GLOSSCAP++NAt   NOUN_PROP
+GLOSSCAP++N/At  NOUN_PROP
+GLOSSCAP++N/At_L        NOUN_PROP
+GLOSSCAP++NAt_L NOUN_PROP
+GLOSSCAP++Nayn  NOUN_PROP
+GLOSSCAP++Ndip  NOUN_PROP
+GLOSSCAP++Ndip_iy       NOUN_PROP
+GLOSSCAP++Ndip_iy_L     NOUN_PROP
+GLOSSCAP++Ndip_L        NOUN_PROP
+GLOSSCAP++Ndu   NOUN_PROP
+GLOSSCAP++NduAt NOUN_PROP
+GLOSSCAP++NduAt_L       NOUN_PROP
+GLOSSCAP++Ndu_L NOUN_PROP
+GLOSSCAP++Nel   NOUN_PROP
+GLOSSCAP++NF    NOUN_PROP
+GLOSSCAP++NF_indec      NOUN_PROP
+GLOSSCAP++Nh_Niyn       NOUN_PROP
+GLOSSCAP++Nh_Nuwn       NOUN_PROP
+GLOSSCAP++Nhy   NOUN_PROP
+GLOSSCAP++Nhy_L NOUN_PROP
+GLOSSCAP++Nihy  NOUN_PROP
+GLOSSCAP++Nihy_L        NOUN_PROP
+GLOSSCAP++NK    NOUN_PROP
+GLOSSCAP++N_L   NOUN_PROP
+GLOSSCAP++Nprop NOUN_PROP
+GLOSSCAP++N-|t  NOUN_PROP
+GLOSSCAP++Nuh   NOUN_PROP
+GLOSSCAP++Nuh_L NOUN_PROP
+GLOSSCAP++Numb  NOUN_PROP
+GLOSSCAP++Nuwn_Niyn     NOUN_PROP
+GLOSSCAP++Nuwn_Niyn_L   NOUN_PROP
+GLOSSCAP++N0_Nh_L    NOUN_PROP
+GLOSSCAP++Nh    NOUN_PROP
+GLOSSCAP++Nh_L    NOUN_PROP
+
+
+
+N       NOUN
+N-ap    NOUN
+N-ap_L  NOUN
+N-|     NOUN
+N-|t    NOUN
+N/At    NOUN
+N/At_L  NOUN
+N/ap    NOUN
+N/ap_L  NOUN
+N0      NOUN
+N0F     NOUN
+N0F_Nh  NOUN
+N0_L    NOUN
+N0_Nh   NOUN
+N0_Nhy  NOUN
+NAF     NOUN
+NAF_Nhy NOUN
+NAn_Nayn        NOUN
+NAn_Nayn_L      NOUN
+NAt     NOUN
+NAt_L   NOUN
+NF      NOUN
+NF_indec        NOUN
+NK      NOUN
+N_L     NOUN
+Nah     NOUN
+Nall    NOUN
+Nall_L  NOUN
+Nap     NOUN
+NapAt   NOUN
+NapAt_L NOUN
+NapF    NOUN
+Nap_L   NOUN
+Nap_dip NOUN
+Napdu   NOUN
+Napdu_L NOUN
+Nayn    NOUN
+Ndip    NOUN
+Ndip_L  NOUN
+Ndip_iy NOUN
+Ndip_iy_L       NOUN
+Ndu     NOUN
+NduAt   NOUN
+NduAt_L NOUN
+Ndu_L   NOUN
+Nel     NOUN
+Nh_Niyn NOUN
+Nh_Nuwn NOUN
+Nhy     NOUN
+Nhy_L   NOUN
+Nihy    NOUN
+Nihy_L  NOUN
+Nprop   NOUN
+Nuh     NOUN
+Nuh_L   NOUN
+Numb    NOUN
+Nuwn_Niyn       NOUN
+Nuwn_Niyn_L     NOUN
+N0_Nh_L    NOUN
+Nh    NOUN
+Nh_L    NOUN
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+EXTEND LEXEME
+
+
+;; ARAMORPH 1.2.1
+
+<in_1		lex:<ino_1
+<iy~A-_1    lex:<iy~A_1
+<iy~Aka_2   lex:<iy~A_1
+>an_1	    lex:>ano_1
+>an~amA_1	lex:>an~a_1
+>ay~AF_1	lex:>ay~
+Eam~A_1 	lex:Ean_1
+EinodamA_1	lex:Einod_1
+HasobamA_1	lex:Hasab_1
+HiynamA_1	lex:Hiyn_1
+baEodamA_1	lex:baEod_1
+bi-_1	    lex:bi_1
+bi>an_1	    lex:>ano_1
+bi>an~a_1	lex:>an~a_1
+bimA_1		lex:mA_1
+bimA_2		lex:mA_3
+bima_1		lex:mA_1
+duwnamA_1	lex:duwn_1
+fiymA_2		lex:mA_1
+ka>an~amA_1	lex:>an~a_1
+ka>an~a_1	lex:>an~a_1
+laTAlamA_1	lex:TAlamA_2
+TAlamA_1	lex:TAlamA_2
+lamA_1		lex:mA_2
+la}in~a_1	lex:<ino_1
+li-_1	    lex:li_1
+li>an_1	    lex:>ano_1
+li>an~_1	lex:>an~a_1
+li>an~a_1	lex:>an~a_1
+limA_1		lex:mA_1
+litaw~i-_1  lex:taw~_1
+mAyazAl_1   lex:zAl_1
+mim~A_2		lex:min_1
+mim~a_1		lex:min_1		
+mim~an_1	lex:min_1
+mim~an_2	lex:min_1
+mivolamA_1	lex:mivol_1
+nAhiyk_1	lex:nAhiyka_1
+qabolamA_1	lex:qabol_1
+qad_1	lex:qado_1
+qad_2	lex:qado_2
+qal~amA_1	lex:qal~-i_1
+waqotamA_1	lex:waqot_1
+
+;; error entries!!
+yanbagy_1	lex:{inobagaY_1 diac:yanobagiy 
+
+; Rationality + Exceptional Functional Gender (when not matching formal)
+
+;$amos_1		gen:f rat:n
+;xaliyfap_1	gen:m rat:y
+
+
+; Wrong entries
+wAm_1		pos:noun_prop
+tsuwnaAmiy_1	pos:noun_prop
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; The rest not handled yet...
+
+EXTEND LEXEME/STEM
+
+; Broken plurals
+
+;kAtib_1/kut~Ab		num:p gen:m
+;kAtib_1/katab		num:p gen:m
+;>aHomar_1/Humur		num:p gen:m
+
+;; Broken feminine
+;>aHomar_1/HamorA'	num:s gen:f
+;>aHomar_1/HamorA&	num:s gen:f
+;>aHomar_1/HamorA}	num:s gen:f
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; DELETE LEX; ADD LEX??
+
+;; wrong collectives put in one lexeme  (namol/namolap...)
+
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;      END OF FILE      ;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+;; multi-parts
+;; special cases
+;; prefix vs stem vs suffix
+;; underspec
+;;  wa => wa1 wa2 wa3 wa4 
+;;  should we make some distinctions like wa1/wa2 but not POSSPRON or OBJPRON..
+;; pos:verb not verb_psuedo
+;; MOOD:SJ  and no MOOD
+;; unspec 2D
+;; inconsisten: uw/NSUFF_MASC_PL_NOM+hu/POSS_PRON_3MS
+;; uwna/NSUFF_MASC_PL_NOM 
+;; uw/NSUFF_MASC_PL_NOM_POSS
+;; AF/CASE_INDEF_ACC ?? sg/pl?
+;; adj_num/comp...etc.
+;; fa+wa+allah+i /// BAMA not consistent here? 
+;; NOUN_NUM/ADJ_NUM
+;; when prts/cnjs are heads? wa b_
+
+;--> sama inconsistencies
+;; rel pronouns have no gen/num but demonstratives do
+;; dem miss case... dem has two spellings....
+;; /PV
+;; <pos>>lA/NEG_PART+rayoba/NOUN</pos>  ">lA"=> "lA"
+;; <pos>fa/CONJ+li/PREP+nu/IV1P</pos>  NOPE!! not a PREP
+;; DEF and CONST!!!
+;; some cases are SJ ; AG but other are not ...
+;; this allowed? bw:bi/PART+Al/DET+kitAb/NOUN+ayoni/NSUFF_MASC_DU_ACC !!!!!
+;; yn	ayoni	NSuff-ayn	two [acc.]               <pos>ayoni/NSUFF_MASC_DU_ACC</pos>
+;; yn	ayoni	NSuff-ayn	two [gen.]               <pos>ayoni/NSUFF_MASC_DU_GEN</pos>
+;; SAMA does not produce .VN variants
+;; diac:|s lex:<is_1 bw:+<is/ABBREV+
+;; using caps to tell PROPER --> $aroq east;East!
+;; $rq	NAF	diac:$aroq lex:$aroq_1 bw:$aroq/NOUN  gloss:eastward ??ADV??
+;; lemma-stem mess
+;;;; >aHad_1
+;;>Hd     >aHad   N       one
+;;>Hd     >aHad   N       one     <pos>>aHad/NOUN_NUM</pos>
+;;>Hd     >aHad   N       one (of);someone;anyone;no-one
+;;
+;;;; |xar_1
+;;|xr     |xar    Nel     other;another     <pos>|xar/ADJ</pos>
+;;;; >uxoraY_1
+;;>xrY    >uxoraY N0      other;another;additional
+;;>xrA    >uxorA  Nhy     other;another
+;;>xry    >uxoray NAn_Nayn        other;another
+;;>xry    >uxoray NAt     others;another
+;;>xrY    >uxoraY N0      other;another;additional     <pos>>uxoraY/ADJ</pos>
+;;>xrA    >uxorA  Nhy     other;another     <pos>>uxorA/ADJ</pos>
+;;>xry    >uxoray NAn_Nayn        other;another     <pos>>uxoray/ADJ</pos>
+;;>xry    >uxoray NAt     others;another     <pos>>uxoray/ADJ</pos>
+
+
+;; PATB CRAP!
+;;WORD >ms
+;;PATB: >ms # >amosi # [>amosi_1] # NOUN # yesterday
+;;#NOT-1-Repeat
+;;*0.750000 diac:>amos lex:>amosi_1 bw:+>amos/NOUN+ gloss:yesterday pos:noun prc3:0 prc2:0 prc1:0 prc0:0 per:na asp:na vox:na mod:na gen:m num:s stt:u cas:u enc0:0 rat:y
+;;_0.750000 diac:>amosi lex:>amosi_1 bw:+>amos/NOUN+i/CASE_DEF_GEN gloss:yesterday pos:noun prc3:0 prc2:0 prc1:0 prc0:0 per:na asp:na vox:na mod:na gen:m num:s stt:u cas:g enc0:0 rat:y
+;;_0.500000 diac:>amosK lex:>amosi_1 bw:+>amos/NOUN+K/CASE_INDEF_GEN gloss:yesterday pos:noun prc3:0 prc2:0 prc1:0 prc0:0 per:na asp:na vox:na mod:na gen:m num:s stt:i cas:g enc0:0 rat:y
+;;_0.500000 diac:>amosN lex:>amosi_1 bw:+>amos/NOUN+N/CASE_INDEF_NOM gloss:yesterday pos:noun prc3:0 prc2:0 prc1:0 prc0:0 per:na asp:na vox:na mod:na gen:m num:s stt:i cas:n enc0:0 rat:y
+;;
+
+;;more PATB crap
+;INPUT STRING: ً
+;    IS_TRANS: F
+;     COMMENT: 
+;       INDEX: P8W34
+;     OFFSETS: 154,156
+; UNVOCALIZED: F
+;   VOCALIZED: F
+;  VOC_STRING: ً
+;         POS: NOUN.VN
+;       GLOSS: [loose diacritic(s)]
+;       LEMMA: [DEFAULT]
+
+
+
+;; underspec case kilA/NOUN_QUANT+kumA/PRON_2D
+;; MATCH ORDER
+;; word/pos+... => pos+pos => word/pos (+) => pos (+) ..
+;; categories
+
+;; inconsistent use of PRON/POSS_PRON
+;; interesting: bEdhA = bEdmA
+
+;; use categories
+;; use defaults; glosses; etc...
+;; head of construction!! PREP > PRON
+
+;;; multi-component POS: deciding heads... some features only appear here!! coodrinate with PRE/SUF part of file
+
+
+;; if no POS, then  POS=^cat
+
+
+
+;   Prefixes
+;	Interrogative		>+			(infrequent)
+;	Conjunctions		w+ and f+
+;	Particles		l+, b+, k+, s+ (and t+ /dialectal+infrequent/)
+;	Negatives		mA+, lA+
+;	Vocative		yA+
+;	demonstrative		hA+
+
+;   Suffixes
+;	Object/Poss Pronouns	#h #hA #hm #nA #hmA #y #ny #k #km  #hn #kn #kmA
+;	Relative Pronouns	#mA #m and #mn (#mn is only used with mmn and Emn)
+;	Negatives		#lA and #$ (dialectal/infrequent)
+
+
+; prc=pro-clitic; enc=en-clitic
+;          prc3  prc2 prc1 base enc1 enc2
+; roughly: quest conj prep base pron else
+
+
+
+
+;TODO:
+;	error check..
+;	other things...
+
+
+
+

@@ -1,0 +1,212 @@
+#surface diac BW Func* << MODE surface diac BW Func*
+# using "!" to prevent open matching
+
+#Extend Dialect dialect:LEV
+
+################################################################################################################################################
+################################################################################################################################################
+##################          PREFIXES                  ##########################################################################################
+################################################################################################################################################
+################################################################################################################################################
+
+#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
+#=-=-=-=-=-=-=-=-           For IV
+#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
+
+#sy	IVPref-hw-ya	diac:saya bw:sa/FUT_PART+ya/IV3MS gloss:will_+_he/it pos:verb prc1:sa_fut per:3 asp:i mod:i gen:m num:s
+#sy	IVPref-hw-yu	diac:sayu bw:sa/FUT_PART+yu/IV3MS gloss:will_+_he/it pos:verb prc1:sa_fut per:3 asp:i mod:i gen:m num:s
+
+####    TENSE           ####------------------------------------------------------------
+#=== FUTURE ===#
+rH raHo raH/FUT_PART prc1:raH_fut source:lev_north << s sa sa/FUT_PART prc1:sa_fut
+H Ha Ha/FUT_PART prc1:Ha_fut source:lev_north << s sa sa/FUT_PART prc1:sa_fut
+
+#=== SIMPLE PRESENT ===#
+# This work for bylEb, bnlEb, etc. AND bAkl (bi|kulu) BUT NOT blEb (solved next)
+b bi bi/PROG_PART prc1:bi_prog source:lev_north << s sa sa/FUT_PART prc1:sa_fut
+
+#A	IVPref-AnA->a	diac:>a bw:>a/IV1S gloss:I pos:verb per:1 asp:i num:s
+#A	IVPref-AnA->u	diac:>u bw:>u/IV1S gloss:I pos:verb per:1 asp:i num:s
+#ADrb => diac:>aDoribu lex:Darab_1 bw:>a/IV1S+Dorib/IV+u/IVSUFF_MOOD:I gloss:strike;hit pos:verb prc3:0 prc2:0 prc1:0 prc0:0 per:1 asp:i vox:a mod:i gen:m num:s stt:na cas:na enc0:0 rat:na source:spvar stem:Dorib stemcat:IV
+#ADrb => diac:>uDorabu lex:>aDorab_1 bw:>u/IV1S+Dorab/IV_PASS+u/IVSUFF_MOOD:I gloss:be_halted;be_refused;be_renounced pos:verb prc3:0 prc2:0 prc1:0 prc0:0 per:1 asp:i vox:p mod:i gen:m num:s stt:na cas:na enc0:0 rat:na source:spvar stem:Dorab stemcat:IV_Pass_yu
+b ba bi/PROG_PART+>a/IV1S prc1:bi_prog source:lev_north << sA sa>a sa/FUT_PART+>a/IV1S prc1:sa_fut
+b bu bi/PROG_PART+>u/IV1S prc1:bi_prog source:lev_north << sA sa>u sa/FUT_PART+>u/IV1S prc1:sa_fut
+
+#n	IVPref-nHn-na	diac:na bw:na/IV1P gloss:we pos:verb per:1 asp:i num:p
+#n	IVPref-nHn-nu	diac:nu bw:nu/IV1P gloss:we pos:verb per:1 asp:i num:p
+mn mna m/PROG_PART+na/IV1P prc1:m_prog source:lev_north << sn sana sa/FUT_PART+na/IV1P prc1:sa_fut
+mn mnu m/PROG_PART+nu/IV1P prc1:m_prog source:lev_north << sn sanu sa/FUT_PART+nu/IV1P prc1:sa_fut
+
+#=== CONTINUOUS ===#
+Em Eamo Eamo/PROG_PART prc1:Eamo_prog source:lev_north << s sa sa/FUT_PART prc1:sa_fut
+
+####    JUSTIFICATION   ####------------------------------------------------------------
+#ly	IVPref-hw-liya_jus	diac:liya bw:li/JUS_PART+ya/IV3MS gloss:let_+_him/it pos:verb prc1:li_jus per:3 asp:i gen:m num:s
+t ta ta/JUS_PART prc1:ta_jus source:lev_north << l li li/JUS_PART prc1:li_jus
+
+
+####    NEGATIVE        ####------------------------------------------------------------
+#diac:waEamyakotuba lex:katab-u_1 bw:wa/CONJ+Eam/PROG_PART+ya/IV3MS+kotub/IV+a/IVSUFF_MOOD:S gloss:write pos:verb prc3:0 prc2:wa_conj prc1:Eam_prog prc0:0 per:3 asp:i vox:a mod:i gen:m num:s stt:na cas:na enc0:0 rat:na source:lex stem:kotub stemcat:IV
+#diac:wayakotuba    lex:katab-u_1 bw:wa/CONJ+              ya/IV3MS+kotub/IV+a/IVSUFF_MOOD:S gloss:write pos:verb prc3:0 prc2:wa_conj prc1:0        prc0:0 per:3 asp:i vox:a mod:s gen:m num:s stt:na cas:na enc0:0 rat:na source:lex stem:kotub stemcat:IV
+mA mA mA/NEG_PART prc1:mA_neg source:lev_north  << s sa sa/FUT_PART prc1:sa_fut
+mAb mAbi mA/NEG_PART+bi/PROG_PART prc1:mAbi_negprog source:lev_north << b b bi/PROG_PART prc1:bi_prog
+mAmn mAmna mA/NEG_PART+m/PROG_PART prc1:mAm_negprog source:lev_north << mn mna m/PROG_PART prc1:m_prog
+mAH mAHa mA/NEG_PART+Ha/FUT_PART prc1:mAHa_negfut source:lev_north << s sa sa/FUT_PART prc1:sa_fut
+mArH mAraH mA/NEG_PART+raH/FUT_PART prc1:mAraH_negfut source:lev_north << s sa sa/FUT_PART prc1:sa_fut
+mAEm mAEam mA/NEG_PART+Eam/PROG_PART prc1:mAEam_negprog source:lev_north << s sa sa/FUT_PART prc1:sa_fut
+
+m ma m/NEG_PART prc1:m source:lev_north << mA mA mA/NEG_PART prc1:mA source:lev_north
+m$ m$ mS/NEG_PART prc1:mS source:lev_north << mA mA mA/NEG_PART prc1:mA source:lev_north
+
+
+#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
+#=-=-=-=-=-=-=-=-           For PV
+#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
+
+####    NEGATIVE        ####------------------------------------------------------------
+mA mA mA/NEG_PART prc1:mA_neg source:lev_north << l la la/RC_PART prc1:la_rc
+wmA wamA wa/PART+mA/NEG_PART prc2:wa_part prc1:mA_neg source:lev_north << l la la/RC_PART prc1:la_rc
+wmA wamA wa/CONJ+mA/NEG_PART prc2:wa_conj prc1:mA_neg source:lev_north << l la la/RC_PART prc1:la_rc
+m ma m/NEG_PART prc1:m_neg source:lev_north << l la la/RC_PART prc1:la_rc
+#wm wama wa/PART+m/NEG_PART prc2:wa_part prc1:m_neg source:lev_north << l la la/RC_PART prc1:la_rc
+#wm wama wa/CONJ+m/NEG_PART prc2:wa_conj prc1:m_neg source:lev_north << l la la/RC_PART prc1:la_rc
+
+
+#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
+#=-=-=-=-=-=-=-=-           For Nouns
+#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
+
+hAl hAl hAl/DET prc0:hAl_det source:lev_north  << Al Al Al/DET prc0:Al_det
+lhAl lihAl li/PREP+hAl/DET prc1:li_prep prc0:hAl_det source:lev_north << ll lil li/PREP+Al/DET prc1:li_prep prc0:Al_det  
+lhAl lihAl li/PREP+hAl/DET prc1:li_prep prc0:hAl_det source:lev_north << l! li! li/PREP+Al/DET prc1:li_prep prc0:Al_det  
+#bhAl bihAl bi/PREP+hAl/DET prc1:bi_prep prc0:hAl_det source:lev_north << bAl bil bi/PREP+Al/DET prc1:bi_prep prc0:Al_det  
+
+E Ea Ea/PREP prc1:Ea_prep source:lev_north << b bi bi/PREP prc1:bi_prep
+EhAl EahAl Ea/PREP+hAl/DET prc1:Ea_prep prc0:hAl_det source:lev_north << bAl biAl bi/PREP+Al/DET prc1:bi_prep prc0:Al_det
+
+bhAl bihAl bi/PREP+hAl/DET prc1:bi_prep prc0:hAl_det source:lev_north << bAl biAl bi/PREP+Al/DET prc1:bi_prep prc0:Al_det
+
+
+################################################################################################################################################
+################################################################################################################################################
+##################          SUFFIXES                  ##########################################################################################
+################################################################################################################################################
+################################################################################################################################################
+
+#h CVSuff-oh diac:ohu bw:o/CVSUFF_SUBJ:2MS+hu/CVSUFF_DO:3MS gloss:you_[verb]_+_it/him pos:verb per:2 asp:c mod:i gen:m num:s enc0:3ms_dobj
+#w wo o/CVSUFF_SUBJ:2MS+hu/CVSUFF_DO:3MS << h hu o/CVSUFF_SUBJ:2MS+hu/CVSUFF_DO:3MS
+
+# +h 
+w w w/IVSUFF_DO:3MS source:lev_north << ^h! hu hu/IVSUFF_DO:3MS enc0:3ms_dobj
+w w w/PVSUFF_DO:3MS source:lev_north << ^h! hu hu/PVSUFF_DO:3MS enc0:3ms_dobj
+w w w/CVSUFF_DO:3MS source:lev_north << ^h! hu hu/CVSUFF_DO:3MS enc0:3ms_dobj
+w w w/PRON_3MS source:lev_north << ^h! hu hu/PRON_3MS enc0:3ms_pron
+w w w/POSS_PRON_3MS source:lev_north << ^h! hu hu/POSS_PRON_3MS enc0:3ms_poss
+
+# ta, tu
+w uw tu/PVSUFF_SUBJ:1S+w/PVSUFF_DO:3MS source:lev_north << h hu tu/PVSUFF_SUBJ:1S+hu/PVSUFF_DO:3MS enc0:3ms_dobj
+w uw ta/PVSUFF_SUBJ:2MS+w/PVSUFF_DO:3MS source:lev_north << h hu ta/PVSUFF_SUBJ:2MS+hu/PVSUFF_DO:3MS enc0:3ms_dobj
+
+w uw << wh hu hu/ enc0:3ms_dobj
+w uw << wnh hu hu/ enc0:3ms_dobj
+w uw << nh nahu hu/ enc0:3ms_dobj
+wh uwh << nh nahu hu/ enc0:3ms_dobj
+
+#p p << h hu
+hn << hm
+n << hm
+A << hA
+
+tw << th
+tp << th
+tn << thm
+thn << thm
+tA << thA
+
+kn << km
+tkn << tkm
+
+Atw << Ath
+Atp << Ath
+Atn << Athm
+Athn << Athm
+AtA << AthA
+
+ykn << ykm
+
+nAhn << nAhm
+nAkn << nAkm
+
+twh << tmwh
+#twA << tmwh Spelling error
+#tw << tmwh  Spelling error
+twhn << tmwhm
+twn << tmwhm
+twhA << tmwhA
+twA << tmwhA
+twny << tmwny
+twnA << tmwnA
+
+wh << mwh
+whn << mwhm
+wn << mwhm
+wny << mwny
+wnA << mwnA
+whA << mwhA
+wA << mwhA
+
+whn << whm
+wn << whm
+wkn << wkm
+wA << whA
+# wky
+
+#########################################################################################################
+
+#lk lk/VSUFF source:dia << k k ka/.VSUFF_DO:2MS pos:verb num:(s|p)
+#lk  source:dia << k k ka/PVSUFF_DO:2MS pos:verb num:p
+#lk  source:dia << k k ki/PVSUFF_DO:2FS pos:verb num:s
+#lk  source:dia << k k ki/PVSUFF_DO:2FS pos:verb num:p
+#lyk  source:dia << k k ki/PVSUFF_DO:2FS pos:verb num:s
+#lyk  source:dia << k k ki/PVSUFF_DO:2FS pos:verb num:p
+
+
+# 3MS: lh, lw, lp           => (P|I|C)V
+#lh lah lh/VSUFF source:dia << k k k(a|i)/(P|I)VSUFF_DO:2(M|F)S pos:verb num:(s|p)
+lh lah la/PREP+hu/VSUFF_DO:3MS enc0:l3ms_prepdobj source:dia << h h hu/(I|P|C)VSUFF_DO:3MS pos:verb enc0:3ms_dobj
+lw luw la/PREP+w/VSUFF_DO:3MS enc0:l3ms_prepdobj source:dia << h h hu/(I|P|C)VSUFF_DO:3MS pos:verb enc0:3ms_dobj
+#lp lap la/PREP+p/VSUFF_DO:3MS enc0:l_prep_3ms_dobj source:dia << h h hu/(I|P|C)VSUFF_DO:3MS pos:verb enc0:3ms_dobj
+
+
+# 3FS: lhA, lA              => (P|I|C)V
+lhA lahA la/PREP+hA/VSUFF_DO:3FS enc0:l3fs_prepdobj source:dia << hA hA hA/(I|P|C)VSUFF_DO:3FS pos:verb enc0:3fs_dobj
+lA lA la/PREP+A/VSUFF_DO:3FS enc0:l3fs_prepdobj source:lev << hA hA hA/(I|P|C)VSUFF_DO:3FS pos:verb enc0:3fs_dobj
+
+# 3(M|F)P: lhn, ln          => (P|I|C)V
+lhn lahun la/PREP+hun/VSUFF_DO:3MP enc0:l3mp_prepdobj source:dia << hm hum hum/(I|P|C)VSUFF_DO:3MP pos:verb enc0:3mp_dobj
+lhn lahun la/PREP+hun/VSUFF_DO:3FP enc0:l3fp_prepdobj source:dia << hn hun~a hun~a/(I|P|C)VSUFF_DO:3FP pos:verb enc0:3fp_dobj
+ln lun lu/PREP+n/VSUFF_DO:3MP enc0:l3mp_prepdobj source:dia << hm hum hum/(I|P|C)VSUFF_DO:3MP pos:verb enc0:3mp_dobj
+ln lun lu/PREP+n/VSUFF_DO:3FP enc0:l3fp_prepdobj source:dia << hn hun~a hun~a/(I|P|C)VSUFF_DO:3FP pos:verb enc0:3fp_dobj
+
+
+# 2MS: lk                   => (P|I|C)V
+#lk lak lk/VSUFF source:dia << k k ka/(P|I)VSUFF_DO:2MS pos:verb num:s
+lk laka la/PREP+ka/VSUFF_DO:2MS enc0:l2ms_prepdobj source:dia << k k ka/(P|I)VSUFF_DO:2MS pos:verb enc0:2ms_dobj
+
+# 2FS: lk, lyk              => (P|I|C)V
+lk laki la/PREP+ki/VSUFF_DO:2FS enc0:l2fs_prepdobj source:dia << k k ki/(P|I)VSUFF_DO:2FS pos:verb enc0:2fs_dobj
+lyk lyk la/PREP+yk/VSUFF_DO:2FS enc0:l2fs_prepdobj source:dia << k k ki/(P|I)VSUFF_DO:2FS pos:verb enc0:2fs_dobj
+
+# 2(M|F)P: lkn, lkm?        => (P|I|C)V
+lkn lakn la/PREP+kn/VSUFF_DO:2FP enc0:l2fp_prepdobj source:lev << kn kun~a kun~a/(P|I)VSUFF_DO:2FP pos:verb enc0:2fp_dobj
+lkn lakn la/PREP+kn/VSUFF_DO:2MP enc0:l2mp_prepdobj source:lev << km kum kum/(P|I)VSUFF_DO:2MP pos:verb enc0:2mp_dobj
+
+# 1S: ly                    => (P|I|C)V
+# diac:liya lex:li-_1 bw:+li/PREP+ya/PRON_1S+ gloss:to/for_+_me_(I_have) pos:prep prc3:0 prc2:0 prc1:0 prc0:na per:na asp:na vox:na mod:na gen:na num:na stt:na cas:na enc0:1s_pron rat:na source:lex stem:liya stemcat:FW-Wa
+ly liy +li/PREP+ya/CVSUFF_DO:1S enc0:l1s_prepdobj source:dia << ny niy niy/(I|P|C)VSUFF_DO:1S pos:verb enc0:1s_dobj
+#ly liy +li/PREP+ya/CVSUFF_DO:1S enc0:l1s_prepdobj source:dia << ny niy niy/(I|P|C)VSUFF_DO:1S pos:verb enc0:1s_dobj
+
+# 1P: lnA                   => (P|I|C)V
+lnA lanA +la/PREP++nA/PVSUFF_DO:1P+ enc0:l1p_prepdobj source:dia << nA nA +nA/(I|P|C)VSUFF_DO:1P pos:verb enc0:1p_dobj
+
+

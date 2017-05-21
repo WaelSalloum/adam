@@ -1,0 +1,103 @@
+
+                        ADAM Software License
+                                for
+                Educational, Research, and In House Uses
+
+License agreement between the Trustees of Columbia University in the
+City of New York, herein referred to as "Us", or "We", and
+
+Institution: ______________________________________________
+
+Address: __________________________________________________
+
+herein referred to as "You", regarding the ADAM software in any version. This
+includes all programs, code and associated documentation you receive from us and
+all modified versions or extensions that you may produce. Herein, this is all
+referred to as "the software and its derivatives". ADAM is an Analyzer for
+Dialectal Arabic Morphology. 
+
+     1. You agree that you will not sell or otherwise distribute the software
+        and its derivatives;
+     2. You acknowledge the confidential and valuable nature of the software and
+        its derivatives. You will not divulge or distribute the software and its
+        derivatives to third parties, nor allow any part of the software and its
+        derivatives to be so divulged or distributed, unless express written
+        permission is given by us. You will instruct your employees, students or
+        other persons authorized to have access to the software and its
+        derivatives not to divulge or distribute it to third parties, unless
+        express written permission is given by us;
+     3. The software and its derivatives will be used only on computers you
+        control;
+     4. You agree that you will use the software and its derivatives solely for
+        internal, non-commercial research or academic purposes. Nothing in this
+        agreement gives you the right to sell, lease, distribute, transfer,
+        sublicense, or otherwise dispose of the software and its derivatives,
+        in whole or in part, or to make any commercial use of it whatsoever;
+     5. Title and copyright of the software and its derivatives will remain with
+        us and shall at no point transfer to you. You may make copies only for
+        backup purposes, and they shall contain the original copyright notices
+        we inserted;
+     6. Official publications such as manuals, technical reports and articles in
+        journals or conference proceedings that are based on the ideas of CADIM
+        Research Group, its software and its derivatives will give proper
+        recognition to the CADIM Research Group of the Center for Computational
+        Learning Systems at Columbia University and the people who worked on it;
+     7. You acknowledge that the software and its derivatives are being supplied
+        "as-is" without any support services or future updates or releases. We
+        may or may not make future updates and releases designated ADAM
+        available to you under this same licensing agreement, but we are in no
+        way obligated to do so. If you discover any error in the software and
+        its derivatives, we encourage you to inform us. We will not necessarily
+        acknowledge or repair any such errors thus reported;
+     8. We make no warranties or representations of any kind, either express or
+        implied, as to any matter whatsoever, including merchantability or
+        fitness for any particular purpose. You agree that we shall not be held
+        to any liability and you agree to indemnify, defend, and hold us
+        harmless with respect to any claims by you or a third party arising from
+        or on account of the use of the software and its derivatives, regardless
+        of the form of action, whether in contract or tort, including
+        negligence. In no event will we be liable for consequential or
+        incidental damages of any nature whatsoever;
+     9. The user of the software and its derivatives will make sure that all
+        potential users in his/her environment are aware of this agreement and
+        of the terms for using the provided software and producing derived
+        software.
+    10. You may not assign or transfer this License Agreement or the Software
+        and Its Derivatives, without our prior written consent.
+    11. You will comply with all export controls and US Government export
+        regulations applicable to the Software and Its Derivatives.
+    12. This License Agreement represents the entire Agreement between You and
+        Us with respect to the Software and Its Derivatives. No changes to this
+        Agreement will be valid unless made in writing and signed by You and Us.
+        This Agreement will be governed by the law of New York State. You may
+        execute this Agreement by facsimile transmission to Us at
+        +1 (212) 870-1285, Attn: Giselle Garcia (gg2166@columbia.edu).
+
+LICENSOR:
+
+
+The Trustees of Columbia University in the City of New York
+
+By (Name and Title): __________________________________________
+
+
+Date: _________________________________________________________
+
+
+LICENSEE:
+
+
+Institution: __________________________________________________
+
+
+By (Name and Title): __________________________________________
+
+
+Email Address: ________________________________________________
+
+
+Signature: ____________________________________________________
+
+
+Date: _________________________________________________________
+

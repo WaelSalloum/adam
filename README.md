@@ -3,7 +3,10 @@
 Copyright 2012 (c) Columbia University. All Rights Reserved.
 
 ADAM VERSION: 0.4
+
 Authors: Wael Salloum and Nizar Habash. 
+
+--------------------------------------------------------------------------------
 
 ## CITATION
 
@@ -15,8 +18,35 @@ If you use ADAM, please cite this paper:
     Workshop on Algorithms and Resources for Modelling of Dialects and
     Language Varieties, Edinburgh, Scotland, UK, July 31, 2011;
     pp.10-21.
+    
+    @inproceedings{Salloum+Habash:2011,
+        Address = {Edinburgh, Scotland},
+        Author = {Salloum, Wael and Habash, Nizar},
+        Booktitle = {Proceedings of the First Workshop on Algorithms and Resources for Modelling of Dialects and Language Varieties},
+        Date-Modified = {2012-03-17 17:41:26 -0400},
+        Pages = {10--21},
+        Title = {{Dialectal to Standard Arabic Paraphrasing to Improve Arabic-English Statistical Machine Translation}},
+        Year = {2011}}
 
-[http://aclweb.org/anthology/W/W11/W11-2602.pdf]
+
+http://aclweb.org/anthology/W/W11/W11-2602.pdf
+
+And:
+    Salloum, Wael, and Nizar Habash. "Adam: Analyzer for dialectal arabic 
+    morphology." Journal of King Saud University-Computer and Information 
+    Sciences 26.4 (2014): 372-378.
+    
+    @article{salloum+habash2014adam,
+          title={Adam: Analyzer for dialectal arabic morphology},
+          author={Salloum, Wael and Habash, Nizar},
+          journal={Journal of King Saud University-Computer and Information Sciences},
+          volume={26},
+          number={4},
+          pages={372--378},
+          year={2014},
+          publisher={Elsevier}}
+
+http://www.sciencedirect.com/science/article/pii/S1319157814000342
 
 --------------------------------------------------------------------------------
 

@@ -1,21 +1,11 @@
-# adam
-Analyzer for Dialectal Arabic Morphology (ADAM)
+# ADAM: Analyzer for Dialectal Arabic Morphology
 
---------------------------------------------------------------------------------
 Copyright 2012 (c) Columbia University. All Rights Reserved.
---------------------------------------------------------------------------------
-
-        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-        ADAM:  Analyzer for Dialectal Arabic Morphology
-        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 ADAM VERSION: 0.4
 Authors: Wael Salloum and Nizar Habash. 
---------------------------------------------------------------------------------
 
-        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-                           CITATION
-        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# CITATION
 
 If you use ADAM, please cite this paper:
 
@@ -29,10 +19,7 @@ If you use ADAM, please cite this paper:
     http://aclweb.org/anthology/W/W11/W11-2602.pdf
 --------------------------------------------------------------------------------
 
-        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-			                 INSTALLATION
-        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-
+# INSTALLATION
 
 1. Get a standard Arabic morphological database.
  
@@ -84,9 +71,7 @@ Output: adam-v0.4.db in the current (package) directory
 
 --------------------------------------------------------------------------------
 
-        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-                   ANALYSIS WITH ADAM
-        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# ANALYSIS WITH ADAM
 
 
 Usage:
@@ -102,7 +87,7 @@ perl ADAM.pl <ADAM-DB> <backoff>?
 
     
 Example:
---------
+______
 
 $ perl ADAM.pl adam-v0.4.db 
 loading database [../work/adam-v0.4/adam-v0.4.db] in [analysis] mode ...
@@ -121,15 +106,13 @@ diac:EahAl>asAsi lex:>asAs_1 bw:Ea/PREP+hAl/DET+>asAs/NOUN+i/CASE_DEF_GEN gloss:
 
 --------------------------------------------------------------------------------
 
-        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-	                  		KNOWN BUGS
-        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# KNOWN BUGS
 
 The current release of ADAM was mainly tested on SAMA 3.1
 databases. This is the version used in the paper mentioned above.  The
 conversion for Aramorph is known to have some limitations. We plan on
 addressing this in the future.
 
---------------------------------------------------------------------------------
+
+
 Copyright 2012 (c) Columbia University. All Rights Reserved.
---------------------------------------------------------------------------------

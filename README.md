@@ -5,7 +5,7 @@ Copyright 2012 (c) Columbia University. All Rights Reserved.
 ADAM VERSION: 0.4
 Authors: Wael Salloum and Nizar Habash. 
 
-# CITATION
+## CITATION
 
 If you use ADAM, please cite this paper:
 
@@ -16,12 +16,13 @@ If you use ADAM, please cite this paper:
     Language Varieties, Edinburgh, Scotland, UK, July 31, 2011;
     pp.10-21.
 
-    http://aclweb.org/anthology/W/W11/W11-2602.pdf
+[http://aclweb.org/anthology/W/W11/W11-2602.pdf]
+
 --------------------------------------------------------------------------------
 
-# INSTALLATION
+## INSTALLATION
 
-1. Get a standard Arabic morphological database.
+### 1. Get a standard Arabic morphological database.
  
 To use ADAM, you need to acquire one the morphological analyzers from
 the Buckwalter Arabic Morphological Analyzer (BAMA) family --
@@ -34,18 +35,18 @@ henceforth (XAMA). There are three choices:
     c. Aramorph 1.2 (FREE VERSION!!!)
         Go to Sourceforge: http://sourceforge.net/projects/aramorph/
 
-2. Convert XAMA database to ADAM database:
+### 2. Convert XAMA database to ADAM database:
 
 Use the script convert/XAMA-to-ADAM.sh to create ADAM database from
 your SAMA/BAMA/Aramorph database. 
 
 
 Usage: 
-______
+--------
 
-$ bash convert/XAMA-to-ADAM.sh <XAMA-DB-Directory> <XAMA-Version> <ADAM-Version>
+   $ bash convert/XAMA-to-ADAM.sh [XAMA-DB-Directory] [XAMA-Version] [ADAM-Version]
     
-        <XAMA-DB-Directory>: is the directory that contains XAMA database that you have. 
+        [XAMA-DB-Directory]: is the directory that contains XAMA database that you have. 
                              For Example, for SAMA 3.1, it should be:
                                     SAMA-3.1/SAMA-3.1/lib/SAMA_DB/v3_1/
         
@@ -71,11 +72,11 @@ Output: adam-v0.4.db in the current (package) directory
 
 --------------------------------------------------------------------------------
 
-# ANALYSIS WITH ADAM
+## ANALYSIS WITH ADAM
 
 
 Usage:
-______
+--------
 
 perl ADAM.pl <ADAM-DB> <backoff>?
  <backoff> ::= {none, noan-all, noan-prop, add-all, add-prop}
@@ -87,7 +88,7 @@ perl ADAM.pl <ADAM-DB> <backoff>?
 
     
 Example:
-______
+--------
 
 $ perl ADAM.pl adam-v0.4.db 
 loading database [../work/adam-v0.4/adam-v0.4.db] in [analysis] mode ...
@@ -106,7 +107,7 @@ diac:EahAl>asAsi lex:>asAs_1 bw:Ea/PREP+hAl/DET+>asAs/NOUN+i/CASE_DEF_GEN gloss:
 
 --------------------------------------------------------------------------------
 
-# KNOWN BUGS
+## KNOWN BUGS
 
 The current release of ADAM was mainly tested on SAMA 3.1
 databases. This is the version used in the paper mentioned above.  The
@@ -115,4 +116,5 @@ addressing this in the future.
 
 
 
+--------------------------------------------------------------------------------
 Copyright 2012 (c) Columbia University. All Rights Reserved.
